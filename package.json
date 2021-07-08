@@ -1,0 +1,22 @@
+{
+  "name": "souvlaki",
+  "version": "0.0.1",
+  "description": "Composable react wrapper utilities, to make testing much easier",
+  "main": "build/index.ts",
+  "repository": "git@github.com:camjackson/souvlaki.git",
+  "author": "Cam Jackson <1930451+camjackson@users.noreply.github.com>",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "husky": ">=6",
+    "lint-staged": ">=10",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
+  },
+  "lint-staged": {
+    "*.{ts,js,css,md}": "prettier --write"
+  },
+  "scripts": {
+    "prepare": "husky install"
+  }
+}
