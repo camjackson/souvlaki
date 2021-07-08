@@ -1,18 +1,60 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { createHelper, wrapper } from '..';
+import { createHelper, mapHelperToWrapper, wrapper } from '..';
+import { SubtitleWrapper, TestComponent, TitleWrapper } from './fixtures';
+
+const condense = ([str]: TemplateStringsArray) =>
+  str
+    .split('\n')
+    .map((line) => line.trim())
+    .join('');
 
 describe('souvlaki', () => {
   it('creates a nothing wrapper if no wrappers are given', () => {
-    const MyComponent = () => <div>Oh hey!</div>;
+    const rendered = render(<TestComponent />, { wrapper: wrapper() });
 
-    const rendered = render(<MyComponent />, { wrapper: wrapper() });
-
-    expect(rendered.container.innerHTML).toEqual('<div>Oh hey!</div>');
+    expect(rendered.container.innerHTML).toEqual('<span>Oh hey!</span>');
   });
 
-  it('works', () => {
-    const withSomething = () => createHelper();
-    const withSomethingElse = (value: number) => createHelper(value);
+  it('can create a very basic wrapper', () => {
+    const withTitle = createHelper();
+    mapHelperToWrapper(withTitle, TitleWrapper);
+
+    const rendered = render(<TestComponent />, {
+      wrapper: wrapper(withTitle()),
+    });
+
+    expect(rendered.container.innerHTML).toEqual(
+      condense`
+        <div>
+          <h1>Title</h1>
+          <span>Oh hey!</span>
+        </div>
+      `,
+    );
+  });
+
+  it('can compose wrappers', () => {
+    const withTitle = createHelper();
+    mapHelperToWrapper(withTitle, TitleWrapper);
+
+    const withSubtitle = createHelper();
+    mapHelperToWrapper(withSubtitle, SubtitleWrapper);
+
+    const rendered = render(<TestComponent />, {
+      wrapper: wrapper(withTitle(), withSubtitle()),
+    });
+
+    expect(rendered.container.innerHTML).toEqual(
+      condense`
+        <div>
+          <h1>Title</h1>
+          <div>
+            <h2>Subtitle</h2>
+            <span>Oh hey!</span>
+          </div>
+        </div>
+      `,
+    );
   });
 });
