@@ -1,3 +1,5 @@
 #!/bin/bash
 
-yarn build && yarn publish
+yarn jest --env jsdom
+yarn build
+yarn publish

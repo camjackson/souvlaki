@@ -4,6 +4,7 @@
     "module": "commonjs",
     "declaration": true,
     "outDir": "build",
+    "jsx": "react-jsx",
 
     "strict": true,
     "noImplicitAny": true,
