@@ -7,6 +7,10 @@
   "author": "Cam Jackson <1930451+camjackson@users.noreply.github.com>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "prepare": "husky install",
+    "build": "tsc"
+  },
   "devDependencies": {
     "husky": ">=6",
     "lint-staged": ">=10",
@@ -15,8 +19,5 @@
   },
   "lint-staged": {
     "*.{ts,js,css,md}": "prettier --write"
-  },
-  "scripts": {
-    "prepare": "husky install"
   }
 }
