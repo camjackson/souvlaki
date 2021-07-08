@@ -2,7 +2,11 @@
   "name": "souvlaki",
   "version": "0.0.1",
   "description": "Composable react wrapper utilities, to make testing much easier",
-  "main": "build/index.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build"
+  ],
   "repository": "git@github.com:camjackson/souvlaki.git",
   "author": "Cam Jackson <1930451+camjackson@users.noreply.github.com>",
   "license": "MIT",
