@@ -16,7 +16,7 @@ describe('souvlaki', () => {
     expect(rendered.container.innerHTML).toEqual('<span>Oh hey!</span>');
   });
 
-  it('can create a very basic wrapper', () => {
+  it('can do a single wrapper with no params', () => {
     const withTitle = createHelper();
     mapHelperToWrapper(withTitle, TitleWrapper);
 
@@ -34,7 +34,7 @@ describe('souvlaki', () => {
     );
   });
 
-  it('can compose wrappers', () => {
+  it('can do two wrappers with no params', () => {
     const withTitle = createHelper();
     mapHelperToWrapper(withTitle, TitleWrapper);
 

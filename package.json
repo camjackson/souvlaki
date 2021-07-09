@@ -14,7 +14,7 @@
   "scripts": {
     "prepare": "husky install",
     "build": "tsc",
-    "test": "jest --env jsdom --watch"
+    "test": "jest --env jsdom --watch src"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
