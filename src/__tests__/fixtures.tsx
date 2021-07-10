@@ -1,5 +1,4 @@
-import React, { PropsWithChildren } from 'react';
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 
 it('is not a real test file', () => {});
 

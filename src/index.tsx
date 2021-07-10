@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { ComponentType } from 'react';
 
 type Wrapper<Args extends any[] = []> = (...args: Args) => ComponentType;
