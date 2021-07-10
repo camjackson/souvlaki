@@ -1,38 +1,48 @@
 import React, { ReactElement } from 'react';
 import { ComponentType } from 'react';
 
-type HelperInstance = {
-  wrapper: ComponentType;
+type Wrapper<Args extends any[] = []> = (...args: Args) => ComponentType;
+
+type HelperInstance<Args extends any[] = []> = {
+  wrapper: Wrapper<Args>;
+  args: Args;
 };
 
-type Helper = {
-  (): HelperInstance;
-  wrapper: ComponentType | null;
+type Helper<Args extends any[] = []> = {
+  (...args: Args): HelperInstance<Args>;
+  wrapper: Wrapper<Args> | null;
 };
 
-export const createHelper = (): Helper => {
-  const helper: Helper = () => {
+export const createHelper = <Args extends any[] = []>(): Helper<Args> => {
+  const helper: Helper<Args> = (...args) => {
     if (helper.wrapper === null) {
       throw new Error('A helper function was never mapped to a wrapper');
     }
-    return { wrapper: helper.wrapper };
+    const helperInstance: HelperInstance<Args> = {
+      wrapper: helper.wrapper,
+      args,
+    };
+    return helperInstance;
   };
   helper.wrapper = null;
   return helper;
 };
 
-export const mapHelperToWrapper = (
-  helper: Helper,
-  wrapper: ComponentType,
+export const mapHelperToWrapper = <Args extends any[] = []>(
+  helper: Helper<Args>,
+  wrapper: Wrapper<Args>,
 ): void => {
   helper.wrapper = wrapper;
 };
 
 export const wrapper = (
-  ...helperInstances: HelperInstance[]
+  ...helperInstances: HelperInstance<any>[]
 ): ComponentType => {
-  const wrappers = helperInstances.map((instance) => instance.wrapper);
-  return composeWrappers(wrappers);
+  const wrapperComponents = helperInstances.map((instance) =>
+    instance.wrapper(...instance.args),
+  );
+
+  return composeComponents(wrapperComponents);
 };
 
 /**
@@ -50,7 +60,7 @@ export const wrapper = (
  * )
  * Note: It mutates its argument, reversing its order
  */
-const composeWrappers = (wrappers: ComponentType[]): ComponentType => {
+const composeComponents = (wrappers: ComponentType[]): ComponentType => {
   if (wrappers.length === 0) {
     return ({ children }) => <>{children}</>;
   }

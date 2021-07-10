@@ -1,13 +1,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { createHelper, mapHelperToWrapper, wrapper } from '..';
-import { SubtitleWrapper, TestComponent, TitleWrapper } from './fixtures';
-
-const condense = ([str]: TemplateStringsArray) =>
-  str
-    .split('\n')
-    .map((line) => line.trim())
-    .join('');
+import {
+  condense,
+  SectionWrapper,
+  TitlePrefixer,
+  TestComponent,
+} from './fixtures';
 
 describe('souvlaki', () => {
   it('creates a nothing wrapper if no wrappers are given', () => {
@@ -17,43 +16,39 @@ describe('souvlaki', () => {
   });
 
   it('can do a single wrapper with no params', () => {
-    const withTitle = createHelper();
-    mapHelperToWrapper(withTitle, TitleWrapper);
+    const withSection = createHelper();
+    mapHelperToWrapper(withSection, SectionWrapper);
 
     const rendered = render(<TestComponent />, {
-      wrapper: wrapper(withTitle()),
+      wrapper: wrapper(withSection()),
     });
 
     expect(rendered.container.innerHTML).toEqual(
       condense`
-        <div>
-          <h1>Title</h1>
+        <section>
           <span>Oh hey!</span>
-        </div>
+        </section>
       `,
     );
   });
 
   it('can do two wrappers with no params', () => {
-    const withTitle = createHelper();
-    mapHelperToWrapper(withTitle, TitleWrapper);
+    const withSection = createHelper();
+    mapHelperToWrapper(withSection, SectionWrapper);
 
-    const withSubtitle = createHelper();
-    mapHelperToWrapper(withSubtitle, SubtitleWrapper);
+    const withTitle = createHelper();
+    mapHelperToWrapper(withTitle, TitlePrefixer);
 
     const rendered = render(<TestComponent />, {
-      wrapper: wrapper(withTitle(), withSubtitle()),
+      wrapper: wrapper(withSection(), withTitle()),
     });
 
     expect(rendered.container.innerHTML).toEqual(
       condense`
-        <div>
+        <section>
           <h1>Title</h1>
-          <div>
-            <h2>Subtitle</h2>
-            <span>Oh hey!</span>
-          </div>
-        </div>
+          <span>Oh hey!</span>
+        </section>
       `,
     );
   });
