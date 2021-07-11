@@ -1,17 +1,18 @@
 import { render } from '@testing-library/react';
-import { createHelper, mapHelperToWrapper, wrapper } from '..';
+import { createHelper, wrapper } from '..';
 import {
   condense,
-  CustomTitleAndSubtitlePrefixer,
-  CustomTitlePrefixer,
-  SectionWrapper,
+  TitleAndSubtitlePrefixer,
+  TitlePrefixer,
+  Section,
   TestComponent,
 } from './fixtures';
 
 describe('souvlaki', () => {
   it('can do a single wrapper with a single param', () => {
-    const withCustomTitle = createHelper<[string]>();
-    mapHelperToWrapper(withCustomTitle, CustomTitlePrefixer);
+    const withCustomTitle = createHelper((title: string) => ({ children }) => (
+      <TitlePrefixer title={title}>{children}</TitlePrefixer>
+    ));
 
     const rendered = render(<TestComponent />, {
       wrapper: wrapper(withCustomTitle('Hello')),
@@ -26,19 +27,22 @@ describe('souvlaki', () => {
   });
 
   it('can do multiple wrappers with different numbers of args', () => {
-    const withSection = createHelper();
-    mapHelperToWrapper(withSection, SectionWrapper);
+    const withSection = createHelper(() => Section);
 
-    const withCustomTitleAndSubtitle = createHelper<[string, string]>();
-    mapHelperToWrapper(
-      withCustomTitleAndSubtitle,
-      CustomTitleAndSubtitlePrefixer,
+    const withTitleAndSubtitle = createHelper(
+      (title: string, subtitle: string) =>
+        ({ children }) =>
+          (
+            <TitleAndSubtitlePrefixer title={title} subtitle={subtitle}>
+              {children}
+            </TitleAndSubtitlePrefixer>
+          ),
     );
 
     const rendered = render(<TestComponent />, {
       wrapper: wrapper(
         withSection(),
-        withCustomTitleAndSubtitle('Primary', 'Secondary'),
+        withTitleAndSubtitle('Primary', 'Secondary'),
       ),
     });
 

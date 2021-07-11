@@ -8,31 +8,15 @@ type HelperInstance<Args extends any[] = []> = {
   args: Args;
 };
 
-type Helper<Args extends any[] = []> = {
-  (...args: Args): HelperInstance<Args>;
-  wrapper: Wrapper<Args> | null;
-};
+type Helper<Args extends any[] = []> = (...args: Args) => HelperInstance<Args>;
 
-export const createHelper = <Args extends any[] = []>(): Helper<Args> => {
-  const helper: Helper<Args> = (...args) => {
-    if (helper.wrapper === null) {
-      throw new Error('A helper function was never mapped to a wrapper');
-    }
-    const helperInstance: HelperInstance<Args> = {
-      wrapper: helper.wrapper,
-      args,
-    };
-    return helperInstance;
-  };
-  helper.wrapper = null;
-  return helper;
-};
-
-export const mapHelperToWrapper = <Args extends any[] = []>(
-  helper: Helper<Args>,
+export const createHelper = <Args extends any[] = []>(
   wrapper: Wrapper<Args>,
-): void => {
-  helper.wrapper = wrapper;
+): Helper<Args> => {
+  return (...args: Args) => ({
+    wrapper,
+    args,
+  });
 };
 
 export const wrapper = (
