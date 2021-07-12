@@ -4,11 +4,12 @@ import { ComponentType } from 'react';
 type Wrapper<Args extends any[] = []> = (...args: Args) => ComponentType;
 type CompositeWrapper<Args extends any[][]> = (...args: Args) => ComponentType;
 
+// TODO: Union-ify these two types?
 type HelperInstance<Args extends any[] = []> = {
   wrapper: Wrapper<Args>;
   args: Args;
 };
-type CompositeHelperInstance<Args extends any[]> = HelperInstance<Args> & {
+type CompositeHelperInstance<Args extends any[]> = HelperInstance<Args[]> & {
   helperIndex: number;
 };
 
@@ -36,20 +37,36 @@ export const createHelpers = <Args extends any[] = []>(
 
 type InstanceArray = (HelperInstance<any> | CompositeHelperInstance<any>)[];
 export const wrapper = (...helpers: InstanceArray): ComponentType => {
-  // The nth wrapper in this array...
-  const wrappers: Wrapper<any>[] = [];
-  // Gets its args from the nth array in this array:
-  const wrapperArgs: any[][] = [];
+  const wrapperToItsArgsMap: Map<Wrapper<any>, any[]> = new Map();
 
   helpers.forEach((helper) => {
-    if (!wrappers.includes(helper.wrapper)) {
-      wrappers.push(helper.wrapper);
-      wrapperArgs.push(helper.args);
+    const helperIndex = (helper as CompositeHelperInstance<any>).helperIndex;
+    const wrapperAlreadyInMap = wrapperToItsArgsMap.has(helper.wrapper);
+
+    if (helperIndex === undefined) {
+      // It's a non-composite wrapper, just push it if it's not there already
+      if (wrapperAlreadyInMap) {
+        throw new Error(
+          `Duplicate helper detected: ${helper.wrapper.toString()}`,
+        );
+      }
+      wrapperToItsArgsMap.set(helper.wrapper, helper.args);
+    } else {
+      // It's a composite wrapper, so...
+      // ... add it to the list, with empty args, if it's not already there...
+      if (!wrapperAlreadyInMap) {
+        wrapperToItsArgsMap.set(
+          helper.wrapper,
+          nEmptyArrays(helper.wrapper.length),
+        );
+      }
+      // ... and then set the args from this instance into the right slot
+      wrapperToItsArgsMap.get(helper.wrapper)![helperIndex] = helper.args;
     }
   });
 
-  const wrapperComponents = wrappers.map((wrapper, index) =>
-    wrapper(...wrapperArgs[index]),
+  const wrapperComponents = Array.from(wrapperToItsArgsMap).map(
+    ([wrapper, args]) => wrapper(...args),
   );
 
   return composeComponents(wrapperComponents);
@@ -87,3 +104,4 @@ const composeComponents = (wrappers: ComponentType[]): ComponentType => {
 };
 
 const range = (n: number) => Array.from(Array(n).keys());
+const nEmptyArrays = (n: number) => Array(n).fill([]);

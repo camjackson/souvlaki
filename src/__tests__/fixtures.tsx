@@ -24,14 +24,14 @@ export const TitlePrefixer = ({
   </>
 );
 
-export const TitleAndSubtitlePrefixer = ({
+export const TitleAndVotesPrefixer = ({
   children,
   title,
-  subtitle,
-}: PropsWithChildren<{ title: string; subtitle: string }>) => (
+  votes,
+}: PropsWithChildren<{ title: string; votes: number }>) => (
   <>
     {title && <h1>{title}</h1>}
-    {subtitle && <h2>{subtitle}</h2>}
+    {votes && <h2>{votes} votes</h2>}
     {children}
   </>
 );
