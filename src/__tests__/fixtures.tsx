@@ -30,8 +30,8 @@ export const TitleAndSubtitlePrefixer = ({
   subtitle,
 }: PropsWithChildren<{ title: string; subtitle: string }>) => (
   <>
-    <h1>{title}</h1>
-    <h2>{subtitle}</h2>
+    {title && <h1>{title}</h1>}
+    {subtitle && <h2>{subtitle}</h2>}
     {children}
   </>
 );
