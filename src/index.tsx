@@ -1,46 +1,59 @@
 import { ReactElement } from 'react';
 import { ComponentType } from 'react';
 
-type Wrapper<Args extends any[] = []> = (...args: Args) => ComponentType;
+type Wrapper<Args extends any[]> = (...args: Args) => ComponentType;
 type CompositeWrapper<Args extends any[][]> = (...args: Args) => ComponentType;
 
-// TODO: Union-ify these two types?
-type HelperInstance<Args extends any[] = []> = {
+type HelperInstance<Args extends any[]> = {
   wrapper: Wrapper<Args>;
   args: Args;
 };
-type CompositeHelperInstance<Args extends any[]> = HelperInstance<Args[]> & {
+type CompositeHelperInstance<
+  HelperArgs extends any[],
+  WrapperArgs extends any[][],
+> = {
+  wrapper: CompositeWrapper<WrapperArgs>;
+  args: HelperArgs;
   helperIndex: number;
 };
 
-type Helper<Args extends any[] = []> = (...args: Args) => HelperInstance<Args>;
-type CompositeHelper<Args extends any[] = []> = (
-  ...args: Args
-) => CompositeHelperInstance<Args>;
+type Helper<Args extends any[]> = (...args: Args) => HelperInstance<Args>;
+type CompositeHelper<HelperArgs extends any[], WrapperArgs extends any[][]> = (
+  ...args: HelperArgs
+) => CompositeHelperInstance<HelperArgs, WrapperArgs>;
 
 export const createHelper =
-  <Args extends any[] = []>(wrapper: Wrapper<Args>): Helper<Args> =>
+  <Args extends any[]>(wrapper: Wrapper<Args>): Helper<Args> =>
   (...args: Args) => ({
     wrapper,
     args,
   });
 
-// TODO: Do this like Args1, Args2, ..., Args10?
-export const createHelpers = <Args extends any[] = []>(
-  wrapper: CompositeWrapper<Args[]>,
-): CompositeHelper<Args>[] =>
-  range(wrapper.length).map((helperIndex) => (...args: Args) => ({
+export const createHelpers = <WrapperArgs extends any[][]>(
+  wrapper: CompositeWrapper<WrapperArgs>,
+): {
+  [Index in keyof WrapperArgs]: CompositeHelper<
+    // @ts-ignore
+    WrapperArgs[Index],
+    WrapperArgs
+  >;
+} =>
+  range(wrapper.length).map((helperIndex) => (...args: any[]) => ({
     wrapper,
     args,
     helperIndex,
-  }));
+  })) as any;
 
-type InstanceArray = (HelperInstance<any> | CompositeHelperInstance<any>)[];
+type InstanceArray = (
+  | HelperInstance<any>
+  | CompositeHelperInstance<any, any>
+)[];
 export const wrapper = (...helpers: InstanceArray): ComponentType => {
   const wrapperToItsArgsMap: Map<Wrapper<any>, any[]> = new Map();
 
   helpers.forEach((helper) => {
-    const helperIndex = (helper as CompositeHelperInstance<any>).helperIndex;
+    const helperIndex = (helper as CompositeHelperInstance<any, any>)
+      .helperIndex;
     const wrapperAlreadyInMap = wrapperToItsArgsMap.has(helper.wrapper);
 
     if (helperIndex === undefined) {

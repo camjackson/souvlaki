@@ -6,7 +6,7 @@ describe('souvlaki', () => {
   describe('associating multiple helpers to a single wrapper', () => {
     it('adds the wrapper once if the first of two no-param helpers is used', () => {
       const [withTitle, withVotes] = createHelpers(
-        (_, __) =>
+        (_: [], __: []) =>
           ({ children }) =>
             (
               <TitleAndVotesPrefixer title="Fixed title" votes={3}>
@@ -30,7 +30,7 @@ describe('souvlaki', () => {
 
     it('adds the wrapper once if the second of two no-param helpers is used', () => {
       const [withTitle, withVotes] = createHelpers(
-        (_, __) =>
+        (_: [], __: []) =>
           ({ children }) =>
             (
               <TitleAndVotesPrefixer title="Fixed title" votes={3}>
@@ -54,7 +54,7 @@ describe('souvlaki', () => {
 
     it('adds the wrapper once if both no-param helpers are used', () => {
       const [withTitle, withVotes] = createHelpers(
-        (_, __) =>
+        (_: [], __: []) =>
           ({ children }) =>
             (
               <TitleAndVotesPrefixer title="Fixed title" votes={3}>
@@ -77,7 +77,7 @@ describe('souvlaki', () => {
 
     it('can pass params from the first of two wrappers', () => {
       const [withTitle, withVotes] = createHelpers(
-        ([title]: [string], __) =>
+        ([title]: [string], __: []) =>
           ({ children }) =>
             (
               <TitleAndVotesPrefixer title={title} votes={3}>
@@ -86,7 +86,7 @@ describe('souvlaki', () => {
             ),
       );
       const rendered = render(<TestComponent />, {
-        wrapper: wrapper(withTitle('Custom title'), withVotes(5)),
+        wrapper: wrapper(withTitle('Custom title')),
       });
 
       expect(rendered.container.innerHTML).toEqual(
@@ -100,7 +100,7 @@ describe('souvlaki', () => {
 
     it('can pass params from the second of two wrappers', () => {
       const [withTitle, withVotes] = createHelpers(
-        (_, [votes]: [number]) =>
+        (_: [], [votes]: [number]) =>
           ({ children }) =>
             (
               <TitleAndVotesPrefixer title="Fixed title" votes={votes}>
