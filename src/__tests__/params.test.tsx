@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { createHelper, wrapper } from '..';
+import { createHelper, wrap } from '..';
 import {
   condense,
   TitleAndVotesPrefixer,
@@ -15,7 +15,7 @@ describe('souvlaki', () => {
     ));
 
     const rendered = render(<TestComponent />, {
-      wrapper: wrapper(withCustomTitle('Hello')),
+      wrapper: wrap(withCustomTitle('Hello')),
     });
 
     expect(rendered.container.innerHTML).toEqual(
@@ -40,7 +40,7 @@ describe('souvlaki', () => {
     );
 
     const rendered = render(<TestComponent />, {
-      wrapper: wrapper(withSection(), withTitleAndVotes('Primary', 10)),
+      wrapper: wrap(withSection(), withTitleAndVotes('Primary', 10)),
     });
 
     expect(rendered.container.innerHTML).toEqual(

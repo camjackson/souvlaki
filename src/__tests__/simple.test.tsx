@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
-import { createHelper, wrapper } from '..';
+import { createHelper, wrap } from '..';
 import { condense, Section, TitlePrefixer, TestComponent } from './fixtures';
 
 describe('souvlaki', () => {
   it('creates a nothing wrapper if no wrappers are given', () => {
-    const rendered = render(<TestComponent />, { wrapper: wrapper() });
+    const rendered = render(<TestComponent />, { wrapper: wrap() });
 
     expect(rendered.container.innerHTML).toEqual('<span>Oh hey!</span>');
   });
@@ -13,7 +13,7 @@ describe('souvlaki', () => {
     const withSection = createHelper(() => Section);
 
     const rendered = render(<TestComponent />, {
-      wrapper: wrapper(withSection()),
+      wrapper: wrap(withSection()),
     });
 
     expect(rendered.container.innerHTML).toEqual(
@@ -33,7 +33,7 @@ describe('souvlaki', () => {
     ));
 
     const rendered = render(<TestComponent />, {
-      wrapper: wrapper(withSection(), withTitle()),
+      wrapper: wrap(withSection(), withTitle()),
     });
 
     expect(rendered.container.innerHTML).toEqual(

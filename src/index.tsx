@@ -10,7 +10,7 @@ type InstanceArray = (
 
 export { createHelper };
 export { createHelpers };
-export const wrapper = (...helpers: InstanceArray): ComponentType => {
+export const wrap = (...helpers: InstanceArray): ComponentType => {
   const wrapperToItsArgsMap: Map<Wrapper<any>, any[]> = new Map();
 
   helpers.forEach((helper) => {

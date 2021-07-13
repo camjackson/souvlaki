@@ -6,7 +6,6 @@ Composable react wrapper utilities, to make testing much easier
 
 - Features:
   - Better examples in the tests
-  - Rename `wrapper` to `buildWrapper`? Or just `wrap`?
 - Docs:
   - Problem & solution
   - Examples

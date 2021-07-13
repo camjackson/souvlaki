@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { createHelpers, wrapper } from '..';
+import { createHelpers, wrap } from '..';
 import { condense, TestComponent, TitleAndVotesPrefixer } from './fixtures';
 
 describe('souvlaki', () => {
@@ -16,7 +16,7 @@ describe('souvlaki', () => {
       );
 
       const rendered = render(<TestComponent />, {
-        wrapper: wrapper(withTitle()),
+        wrapper: wrap(withTitle()),
       });
 
       expect(rendered.container.innerHTML).toEqual(
@@ -40,7 +40,7 @@ describe('souvlaki', () => {
       );
 
       const rendered = render(<TestComponent />, {
-        wrapper: wrapper(withVotes()),
+        wrapper: wrap(withVotes()),
       });
 
       expect(rendered.container.innerHTML).toEqual(
@@ -63,7 +63,7 @@ describe('souvlaki', () => {
             ),
       );
       const rendered = render(<TestComponent />, {
-        wrapper: wrapper(withTitle(), withVotes()),
+        wrapper: wrap(withTitle(), withVotes()),
       });
 
       expect(rendered.container.innerHTML).toEqual(
@@ -86,7 +86,7 @@ describe('souvlaki', () => {
             ),
       );
       const rendered = render(<TestComponent />, {
-        wrapper: wrapper(withTitle('Custom title')),
+        wrapper: wrap(withTitle('Custom title')),
       });
 
       expect(rendered.container.innerHTML).toEqual(
@@ -109,7 +109,7 @@ describe('souvlaki', () => {
             ),
       );
       const rendered = render(<TestComponent />, {
-        wrapper: wrapper(withVotes(9)),
+        wrapper: wrap(withVotes(9)),
       });
 
       expect(rendered.container.innerHTML).toEqual(
@@ -132,7 +132,7 @@ describe('souvlaki', () => {
             ),
       );
       const rendered = render(<TestComponent />, {
-        wrapper: wrapper(withTitle('Custom title'), withVotes(50)),
+        wrapper: wrap(withTitle('Custom title'), withVotes(50)),
       });
 
       expect(rendered.container.innerHTML).toEqual(
