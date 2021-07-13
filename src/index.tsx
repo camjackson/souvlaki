@@ -1,53 +1,15 @@
 import { ReactElement } from 'react';
 import { ComponentType } from 'react';
-
-type Wrapper<Args extends any[]> = (...args: Args) => ComponentType;
-type CompositeWrapper<Args extends any[][]> = (...args: Args) => ComponentType;
-
-type HelperInstance<Args extends any[]> = {
-  wrapper: Wrapper<Args>;
-  args: Args;
-};
-type CompositeHelperInstance<
-  HelperArgs extends any[],
-  WrapperArgs extends any[][],
-> = {
-  wrapper: CompositeWrapper<WrapperArgs>;
-  args: HelperArgs;
-  helperIndex: number;
-};
-
-type Helper<Args extends any[]> = (...args: Args) => HelperInstance<Args>;
-type CompositeHelper<HelperArgs extends any[], WrapperArgs extends any[][]> = (
-  ...args: HelperArgs
-) => CompositeHelperInstance<HelperArgs, WrapperArgs>;
-
-export const createHelper =
-  <Args extends any[]>(wrapper: Wrapper<Args>): Helper<Args> =>
-  (...args: Args) => ({
-    wrapper,
-    args,
-  });
-
-export const createHelpers = <WrapperArgs extends any[][]>(
-  wrapper: CompositeWrapper<WrapperArgs>,
-): {
-  [Index in keyof WrapperArgs]: CompositeHelper<
-    // @ts-ignore
-    WrapperArgs[Index],
-    WrapperArgs
-  >;
-} =>
-  range(wrapper.length).map((helperIndex) => (...args: any[]) => ({
-    wrapper,
-    args,
-    helperIndex,
-  })) as any;
+import { createHelper, HelperInstance, Wrapper } from './simpleWrapper';
+import { createHelpers, CompositeHelperInstance } from './compositeWrapper';
 
 type InstanceArray = (
   | HelperInstance<any>
   | CompositeHelperInstance<any, any>
 )[];
+
+export { createHelper };
+export { createHelpers };
 export const wrapper = (...helpers: InstanceArray): ComponentType => {
   const wrapperToItsArgsMap: Map<Wrapper<any>, any[]> = new Map();
 
@@ -116,5 +78,4 @@ const composeComponents = (wrappers: ComponentType[]): ComponentType => {
       ) as ReactElement;
 };
 
-const range = (n: number) => Array.from(Array(n).keys());
 const nEmptyArrays = (n: number) => Array(n).fill([]);
