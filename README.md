@@ -1,8 +1,15 @@
-# 🌯 souvlaki 🌯
+# 🌯 `souvlaki` 🌯
 
 Composable React.js test wrappers, making it easy to test context-heavy components.
 
-[Jump to example usage.](#the-solution)
+- [Jump to example usage](#the-solution)
+- [Jump to API reference](#api-reference)
+
+```sh
+yarn add -D souvlaki
+# OR
+npm i -D souvlaki
+```
 
 ## The problem
 
@@ -109,15 +116,15 @@ const [withProfile, withProfileActions] = createHelpers(
   // Each array may be empty if the corresponding helper was not used
   ([name, yearJoined], [actions]) =>
     ({ children }) => (
-      <UserProfileProvider state={{ name, yearJoined }} actions={actions}>
+      <PlayerProfileProvider state={{ name, yearJoined }} actions={actions}>
         {children}
-      </UserProfileProvider>;
+      </PlayerProfileProvider>;
     ),
 );
 
-it('shows the user info', () => {
+it('shows the player info', () => {
   // Apply the wrapper with just the profile state
-  render(<UserProfilePage />, {
+  render(<PlayerProfilePage />, {
     wrapper: wrap(withProfile('Jason Blake', '1999')),
   });
 
@@ -129,7 +136,7 @@ it('can delete the profile', () => {
   const deleteProfile = jest.fn();
 
   // Apply the wrapper with just the profile actions
-  render(<UserProfilePage />, {
+  render(<PlayerProfilePage />, {
     wrapper: wrap(withProfileActions({ deleteProfile })),
   });
 
@@ -143,7 +150,7 @@ it('can update the profile', () => {
   const updateProfile = jest.fn();
 
   // Apply the wrapper with both the profile state _and_ actions
-  render(<UserProfilePage />, {
+  render(<PlayerProfilePage />, {
     wrapper: wrap(
       withProfile('Jason Blake', '1999-11-25'),
       withProfileActions({ updateProfile }),
@@ -161,22 +168,107 @@ it('can update the profile', () => {
 });
 ```
 
+## Usage with TypeScript
+
+The above examples can be enhanced with TypeScript to ensure that you pass the correct number and types of arguments to your helpers. See the examples below in the API reference for how to do this.
+
+## API Reference
+
+### `createHelper(wrapperFn) => Helper`
+
+**Parameters**:
+
+- `wrapperFn`: `(...args) => React.ComponentType`
+  - A function that receives whatever values were passed to the helper, and returns a React component that wraps its children.
+
+**Returns**:
+
+`Helper: (...args) => void`
+
+- A helper function that you can call to apply the given wrapper.
+
+**Example**:
+
+```tsx
+const withUser = createHelper(
+  (firstName: string, lastName: string, age: number) =>
+    ({ children }) =>
+      (
+        <UserContext.Provider value={{ firstName, lastName, age }}>
+          {children}
+        </UserContext.Provider>
+      ),
+);
+
+// In a test
+render(<User />, { wrapper: wrap(withUser('Cam', 'Jackson', 19)) });
+```
+
+### `createHelpers(wrapperFn) => Helper[]`
+
+**Parameters**:
+
+- `wrapperFn`: `([...args1], ..., [...argsN]) => React.ComponentType`
+  - A function that receives multiple arrays of arguments, each one being populated (or not) with the values passed to a corresponding helper. It returns a React component that wraps its children.
+
+**Returns**:
+
+`Helper[]: [(...args1) => void, ..., (...argsN) => void]`
+
+- An array of helper functions that you can call to apply the given wrapper. You can use any number of them at once, and the wrapper will be applied once only, with all of the arguments that were provided to all of the helpers.
+
+**Example**:
+
+```tsx
+const [withName, withAge] = createHelpers(
+  ([firstName, lastName]: [string, string], [age]: [number]) =>
+    ({ children }) =>
+      (
+        <UserContext.Provider value={{ firstName, lastName, age }}>
+          {children}
+        </UserContext.Provider>
+      ),
+);
+
+// In a test
+render(<User />, { wrapper: wrap(withName('Cam', 'Jackson')) });
+// Or:
+render(<User />, { wrapper: wrap(age(19)) });
+// Or:
+render(<User />, { wrapper: wrap(withName('Cam', 'Jackson'), withAge(19)) });
+```
+
+### `wrap(...helperInstances) => React.ComponentType`
+
+**Parameters**:
+
+- `...helperInstances`
+  - any number of instantiated helpers. It is a variable number of arguments, not a single array argument.
+
+**Returns**:
+
+`React.Component`
+
+- A React.js component. It's a normal component, so you can do anything with it, but the intended use is as a wrapper for unit tests.
+
+**Example**:
+
+- See above
+
 ## What's with the name?
 
 This is a library for creating test _wrappers_. A [souvlaki](https://www.google.com/search?q=souvlaki&tbm=isch) is a Greek wrap, similar to a doner kebab, but tastier 😏🌯🇬🇷
 
 ## TODO:
 
-- [ ] Features:
-  - [ ] Better examples in the tests
 - [ ] Docs:
   - [x] Problem & solution
-  - [ ] Examples
+  - [x] Examples
     - [x] Simple
-    - [ ] Composite
-  - [ ] API reference
-  - [ ] Installation instructions
-  - [ ] Typescript-specific stuff?
+    - [x] Composite
+  - [x] API reference
+  - [x] Installation instructions
+  - [x] Typescript-specific stuff?
   - [ ] JSDocs on all functions and types
 - [ ] Separate packages for specific libraries
   - [ ] yarn workspaces for this?
