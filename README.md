@@ -99,6 +99,68 @@ it('displays results for the given search string', () => {
 });
 ```
 
+For more complex scenarios, you can define a _composite wrapper_. This is a wrapper that can be applied by any one of several helper functions.
+
+```jsx
+// Create two different helper functions
+// Either (or both) of these can be called to apply the wrapper
+const [withProfile, withProfileActions] = createHelpers(
+  // The wrapper function receives two corresponding arrays of arguments
+  // Each array may be empty if the corresponding helper was not used
+  ([name, yearJoined], [actions]) =>
+    ({ children }) => (
+      <UserProfileProvider state={{ name, yearJoined }} actions={actions}>
+        {children}
+      </UserProfileProvider>;
+    ),
+);
+
+it('shows the user info', () => {
+  // Apply the wrapper with just the profile state
+  render(<UserProfilePage />, {
+    wrapper: wrap(withProfile('Jason Blake', '1999')),
+  });
+
+  expect(screen.getByText('Jason Blake')).toBeInTheDocument();
+  expect(screen.getByText('Joined in 1999')).toBeInTheDocument();
+});
+
+it('can delete the profile', () => {
+  const deleteProfile = jest.fn();
+
+  // Apply the wrapper with just the profile actions
+  render(<UserProfilePage />, {
+    wrapper: wrap(withProfileActions({ deleteProfile })),
+  });
+
+  const deleteButton = screen.getByRole('button', { name: 'Delete profile' });
+  userEvent.click(deleteButton);
+
+  expect(deleteProfile).toHaveBeenCalled();
+});
+
+it('can update the profile', () => {
+  const updateProfile = jest.fn();
+
+  // Apply the wrapper with both the profile state _and_ actions
+  render(<UserProfilePage />, {
+    wrapper: wrap(
+      withProfile('Jason Blake', '1999-11-25'),
+      withProfileActions({ updateProfile }),
+    ),
+  });
+
+  const heightInput = screen.getByRole('input', { name: 'Height' });
+  userEvent.type(heightInput, '189 cm');
+
+  expect(updateProfile).toHaveBeenCalledWith({
+    name: 'Jason Blake',
+    yearJoined: 1999,
+    height: '189 cm',
+  });
+});
+```
+
 ## What's with the name?
 
 This is a library for creating test _wrappers_. A [souvlaki](https://www.google.com/search?q=souvlaki&tbm=isch) is a Greek wrap, similar to a doner kebab, but tastier 😏🌯🇬🇷
