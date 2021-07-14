@@ -1,7 +1,7 @@
 {
   "name": "souvlaki",
   "version": "0.0.1",
-  "description": "Composable react wrapper utilities, to make testing much easier",
+  "description": "Composable React.js test wrappers, making it easy to test context-heavy components.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [
