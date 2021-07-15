@@ -1,39 +1,25 @@
 {
-  "name": "souvlaki",
+  "name": "souvlaki-project",
   "version": "0.0.1",
   "description": "Composable React.js test wrappers, making it easy to test context-heavy components.",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
-  "files": [
-    "build"
-  ],
   "repository": "git@github.com:camjackson/souvlaki.git",
   "author": "Cam Jackson <1930451+camjackson@users.noreply.github.com>",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "scripts": {
     "prepare": "husky install",
-    "build": "tsc",
-    "test": "jest --env jsdom --watch src"
+    "build": "yarn workspaces foreach -vip run build",
+    "test": "yarn workspaces foreach -vip run test-once"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.6",
-    "@babel/preset-env": "^7.14.7",
-    "@babel/preset-react": "^7.14.5",
-    "@babel/preset-typescript": "^7.14.5",
-    "@testing-library/react": "^12.0.0",
-    "@types/jest": "^26.0.24",
-    "@types/react": "^17.0.14",
-    "babel-jest": "^27.0.6",
     "husky": ">=6",
-    "jest": "^27.0.6",
     "lint-staged": ">=10",
-    "prettier": "^2.3.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "typescript": "^4.3.5"
+    "prettier": "^2.3.2"
   },
   "lint-staged": {
     "*.{ts,js,css,md}": "prettier --write"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
