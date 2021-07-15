@@ -4,6 +4,7 @@ Composable React.js test wrappers, making it easy to test context-heavy componen
 
 - [Jump to example usage](#the-solution)
 - [Jump to API reference](#api-reference)
+- [Jump to companion libraries](#companion-libraries)
 
 ```sh
 yarn add -D souvlaki
@@ -264,13 +265,13 @@ Composes the given helper instances together to create a React component that yo
 
 - See above
 
+## Companion libraries
+
+Support is provided for some common libraries that depend heavily on context. If you use one of these libraries, you can install a companion library alongside souvlaki, and use pre-written helpers:
+
+- `apollo-client`: [souvlaki-apollo](https://github.com/camjackson/souvlaki/tree/main/packages/souvlaki-apollo)
+- `react-router`: [souvlaki-react-router](https://github.com/camjackson/souvlaki/tree/main/packages/souvlaki-react-router)
+
 ## What's with the name?
 
 This is a library for creating test _wrappers_. A [souvlaki](https://www.google.com/search?q=souvlaki&tbm=isch) is a Greek wrap, similar to a doner kebab, but tastier 😏🌯🇬🇷
-
-## TODO:
-
-- [ ] Separate packages for specific libraries
-  - [ ] yarn workspaces for this?
-  - [ ] Apollo
-  - [ ] React router

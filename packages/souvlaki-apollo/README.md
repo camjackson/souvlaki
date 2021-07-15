@@ -1,6 +1,7 @@
 # 🌯🚀 `souvlaki-apollo` 🚀🌯
 
-Souvlaki wrapper helper for apollo-client.
+[Souvlaki](https://github.com/camjackson/souvlaki) wrapper helper for [apollo-client](https://www.apollographql.com/docs/react/).
+Wraps your components in an `ApolloProvider` so you don't have to.
 
 ## Installation
 
