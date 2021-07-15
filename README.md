@@ -170,11 +170,16 @@ it('can update the profile', () => {
 
 ## Usage with TypeScript
 
-The above examples can be enhanced with TypeScript to ensure that you pass the correct number and types of arguments to your helpers. See the examples below in the API reference for how to do this.
+The above examples can be enhanced with TypeScript to ensure that you pass the correct number and types of arguments to your helpers. The types of the helper parameters will be inferred from the
+types that you declare on your wrapper function's parameters.
+
+See the examples below in the API reference for how to do this.
 
 ## API Reference
 
 ### `createHelper(wrapperFn) => Helper`
+
+Creates a helper function that can be used to apply the supplied wrapper.
 
 **Parameters**:
 
@@ -205,6 +210,8 @@ render(<User />, { wrapper: wrap(withUser('Cam', 'Jackson', 19)) });
 ```
 
 ### `createHelpers(wrapperFn) => Helper[]`
+
+Creates multiple helper functions any or all of which can be used to apply the supplied wrapper.
 
 **Parameters**:
 
@@ -240,16 +247,18 @@ render(<User />, { wrapper: wrap(withName('Cam', 'Jackson'), withAge(19)) });
 
 ### `wrap(...helperInstances) => React.ComponentType`
 
+Composes the given helper instances together to create a React component that you can wrap around other components.
+
 **Parameters**:
 
 - `...helperInstances`
-  - any number of instantiated helpers. It is a variable number of arguments, not a single array argument.
+  - A variable number of instantiated helpers. Note that it takes multiple arguments, e.g. `wrap(withA(), withB())`, not a single array, e.g. `wrap([withA(), withB()])`.
 
 **Returns**:
 
 `React.Component`
 
-- A React.js component. It's a normal component, so you can do anything with it, but the intended use is as a wrapper for unit tests.
+- A React.js component to wrap around other components. It's a normal component, so you can do anything with it, but the intended use is as a wrapper for unit tests.
 
 **Example**:
 

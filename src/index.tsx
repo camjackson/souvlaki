@@ -10,6 +10,14 @@ type InstanceArray = (
 
 export { createHelper };
 export { createHelpers };
+
+/**
+ * Composes the given helper instances together to create a React component
+ * that you can wrap around other components.
+ *
+ * @param {...HelperInstance} A variable number of instantiated helpers.
+ * @returns {React.ComponentType} A React.js component to wrap around other components.
+ */
 export const wrap = (...helpers: InstanceArray): ComponentType => {
   const wrapperToItsArgsMap: Map<Wrapper<any>, any[]> = new Map();
 
@@ -78,4 +86,7 @@ const composeComponents = (wrappers: ComponentType[]): ComponentType => {
       ) as ReactElement;
 };
 
+/**
+ * E.g. nEmptyArrays(3) -> [[], [], []]
+ */
 const nEmptyArrays = (n: number) => Array(n).fill([]);
