@@ -7,14 +7,21 @@
   "files": [
     "build"
   ],
-  "repository": "git@github.com:camjackson/souvlaki.git",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:camjackson/souvlaki.git",
+    "directory": "packages/souvlaki"
+  },
   "author": "Cam Jackson <1930451+camjackson@users.noreply.github.com>",
   "license": "MIT",
-  "private": false,
   "scripts": {
     "build": "tsc",
     "test": "jest --env jsdom --watch src",
     "test-once": "jest --env jsdom src"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
