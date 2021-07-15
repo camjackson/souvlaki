@@ -1,12 +1,21 @@
 import { ComponentType } from 'react';
 
+/**
+ * A function that takes args collected by a helper, and returns a React component.
+ */
 export type Wrapper<Args extends any[]> = (...args: Args) => ComponentType;
 
+/**
+ * An instantiated helper, to be passed to `wrap`.
+ */
 export type HelperInstance<Args extends any[]> = {
   wrapper: Wrapper<Args>;
   args: Args;
 };
 
+/**
+ * A function that takes args for a wrapper and returns a helper instance.
+ */
 type Helper<Args extends any[]> = (...args: Args) => HelperInstance<Args>;
 
 /**

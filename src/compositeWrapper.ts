@@ -1,7 +1,13 @@
 import { ComponentType } from 'react';
 
+/**
+ * A function that takes args collected by multiple helpers, and returns a React component.
+ */
 type CompositeWrapper<Args extends any[][]> = (...args: Args) => ComponentType;
 
+/**
+ * An instantiated helper from a composite wrapper, to be passed to `wrap`.
+ */
 export type CompositeHelperInstance<
   HelperArgs extends any[],
   WrapperArgs extends any[][],
@@ -11,6 +17,9 @@ export type CompositeHelperInstance<
   helperIndex: number;
 };
 
+/**
+ * A function that takes args for a composite wrapper and returns a helper instance.
+ */
 type CompositeHelper<HelperArgs extends any[], WrapperArgs extends any[][]> = (
   ...args: HelperArgs
 ) => CompositeHelperInstance<HelperArgs, WrapperArgs>;
@@ -39,4 +48,7 @@ export const createHelpers = <WrapperArgs extends any[][]>(
     helperIndex,
   })) as any;
 
+/**
+ * E.g. range(3) -> [0, 1, 2]
+ */
 const range = (n: number) => Array.from(Array(n).keys());
