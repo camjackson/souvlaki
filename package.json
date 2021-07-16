@@ -1,6 +1,6 @@
 {
   "name": "souvlaki-project",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Composable React.js test wrappers, making it easy to test context-heavy components.",
   "repository": "github:camjackson/souvlaki",
   "author": "Cam Jackson <1930451+camjackson@users.noreply.github.com>",

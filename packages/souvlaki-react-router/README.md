@@ -1,4 +1,4 @@
-# 🌯🚀 `souvlaki-react-router` 🚀🌯
+# 🌯🧭 `souvlaki-react-router` 🧭🌯
 
 [Souvlaki](https://github.com/camjackson/souvlaki) wrapper helper for [react-router](https://reactrouter.com/).
 Wraps your components in a `MemoryRouter` so you don't have to.
