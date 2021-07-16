@@ -1,6 +1,6 @@
 {
   "name": "souvlaki-apollo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Souvlaki wrapper helper for apollo-client.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -20,10 +20,10 @@
     "test-once": "jest --env jsdom --color src"
   },
   "peerDependencies": {
-    "@apollo/client": "^3.3.21",
-    "graphql": "^15.5.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "@apollo/client": "*",
+    "graphql": "*",
+    "react": "*",
+    "react-dom": "*",
     "souvlaki": "*"
   },
   "devDependencies": {
