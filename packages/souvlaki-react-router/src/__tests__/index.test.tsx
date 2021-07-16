@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react';
 
 const TestComponent = () => {
   const location = useLocation();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   return (
     <>

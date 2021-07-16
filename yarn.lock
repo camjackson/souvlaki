@@ -1768,6 +1768,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/history@npm:*":
+  version: 4.7.9
+  resolution: "@types/history@npm:4.7.9"
+  checksum: b6aba3eb88899d987b273c384419d95ed1e8b0b3b27c36dc8faf53d748fdc16f982aacd62e31dac65877b0c6f1a77270f8112b7ac5b1d044b06f7ababaa72b75
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.3
   resolution: "@types/istanbul-lib-coverage@npm:2.0.3"
@@ -1831,7 +1838,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^17.0.14":
+"@types/react-router-dom@npm:^5.1.8":
+  version: 5.1.8
+  resolution: "@types/react-router-dom@npm:5.1.8"
+  dependencies:
+    "@types/history": "*"
+    "@types/react": "*"
+    "@types/react-router": "*"
+  checksum: f647bc32a7b13614375714890521327168fb54f41d2acf726f5a9a16f75335da376bd399db99e8e2865dbeb6035ec2af5769936f3b76550095340d956cf4a6c6
+  languageName: node
+  linkType: hard
+
+"@types/react-router@npm:*":
+  version: 5.1.16
+  resolution: "@types/react-router@npm:5.1.16"
+  dependencies:
+    "@types/history": "*"
+    "@types/react": "*"
+  checksum: f8a286dfb328d66a635d24df23876a6fab0dc1dcc357a98709439ba096812bf647cee966d3d42d7fb00a3f355f5a991c0608ad3e7fb5063ea86eea8ea7542144
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:*, @types/react@npm:^17.0.14":
   version: 17.0.14
   resolution: "@types/react@npm:17.0.14"
   dependencies:
@@ -5472,6 +5500,7 @@ fsevents@^2.3.2:
     "@testing-library/react": ^12.0.0
     "@types/jest": ^26.0.24
     "@types/react": ^17.0.14
+    "@types/react-router-dom": ^5.1.8
     babel-jest: ^27.0.6
     jest: ^27.0.6
     react: ^17.0.2
@@ -5489,21 +5518,21 @@ fsevents@^2.3.2:
 
 "souvlaki@file:../souvlaki::locator=souvlaki-apollo%40workspace%3Apackages%2Fsouvlaki-apollo":
   version: 0.0.2
-  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=4ed09d&locator=souvlaki-apollo%40workspace%3Apackages%2Fsouvlaki-apollo"
+  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=d826f4&locator=souvlaki-apollo%40workspace%3Apackages%2Fsouvlaki-apollo"
   peerDependencies:
     react: ^17.0.2
     react-dom: ^17.0.2
-  checksum: 02959fbf817401370a5eead42f1563f7a9cf1fc4a4097cc62f1d81b388ad11d43cadd81207a8a24c985d1993d6c5d497d5fe0c649ca7c7effccc84c8e3c960fe
+  checksum: 695e5cdf6cea5ec6c3c5083bfb69ea4a4d7e1b6321d23f06b7ec33867e9293f5c8f6981f22a5ff59017b883a29871ab32e6bd1e95b8dab8ff431cb799a95d82d
   languageName: node
   linkType: hard
 
 "souvlaki@file:../souvlaki::locator=souvlaki-react-router%40workspace%3Apackages%2Fsouvlaki-react-router":
   version: 0.0.2
-  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=4ed09d&locator=souvlaki-react-router%40workspace%3Apackages%2Fsouvlaki-react-router"
+  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=d826f4&locator=souvlaki-react-router%40workspace%3Apackages%2Fsouvlaki-react-router"
   peerDependencies:
     react: ^17.0.2
     react-dom: ^17.0.2
-  checksum: 02959fbf817401370a5eead42f1563f7a9cf1fc4a4097cc62f1d81b388ad11d43cadd81207a8a24c985d1993d6c5d497d5fe0c649ca7c7effccc84c8e3c960fe
+  checksum: 695e5cdf6cea5ec6c3c5083bfb69ea4a4d7e1b6321d23f06b7ec33867e9293f5c8f6981f22a5ff59017b883a29871ab32e6bd1e95b8dab8ff431cb799a95d82d
   languageName: node
   linkType: hard
 
