@@ -1,6 +1,6 @@
 {
   "name": "souvlaki-apollo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Souvlaki wrapper helper for apollo-client.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
