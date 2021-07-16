@@ -15,7 +15,7 @@ export { createHelpers };
  * Composes the given helper instances together to create a React component
  * that you can wrap around other components.
  *
- * @param {...HelperInstance} A variable number of instantiated helpers.
+ * @param {...HelperInstance} ...helpers A variable number of instantiated helpers.
  * @returns {React.ComponentType} A React.js component to wrap around other components.
  */
 export const wrap = (...helpers: InstanceArray): ComponentType => {
@@ -56,7 +56,7 @@ export const wrap = (...helpers: InstanceArray): ComponentType => {
 };
 
 /**
- * @param wrappers, e.g.: `[WrapperA, WrapperB, WrapperC]`
+ * @param {React.ComponentType} wrappers e.g.: `[WrapperA, WrapperB, WrapperC]`
  * @returns a React component that wraps its children in each wrapper
  * in the given order, e.g.:
  * ({ children }) => (

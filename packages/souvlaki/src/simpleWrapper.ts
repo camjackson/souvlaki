@@ -21,7 +21,7 @@ type Helper<Args extends any[]> = (...args: Args) => HelperInstance<Args>;
 /**
  * Creates a helper function that can be used to apply the supplied wrapper.
  *
- * @param {Wrapper} A function that receives whatever values were passed to the
+ * @param {Wrapper} wrapper A function that receives whatever values were passed to the
  * helper, and returns a React component that wraps its children.
  * @returns {Helper} A helper function that you can call to apply the given wrapper.
  */

@@ -28,7 +28,7 @@ type CompositeHelper<HelperArgs extends any[], WrapperArgs extends any[][]> = (
  * Creates multiple helper functions any or all of which can be used to apply
  * the supplied wrapper.
  *
- * @param {CompositeWrapper} A function that receives multiple arrays of arguments,
+ * @param {CompositeWrapper} wrapper A function that receives multiple arrays of arguments,
  * each one being populated (or not) with the values passed to a corresponding helper.
  * It returns a React component that wraps its children.
  * @returns {Helper[]} An array of helper functions that you can call to apply the given wrapper.

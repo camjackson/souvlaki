@@ -19,8 +19,8 @@ const interpolatePathParams = (
 
 /**
  * A helper you can call to apply a MemoryRouter wrapper to your components.
- * @param {string} path: The current path, e.g., '/home', or '/users/:userId'
- * @param {object} params: Key/value pairs to fill in path parameters, e.g. { userId: 'abc123' }
+ * @param {string} path The current path, e.g., '/home', or '/users/:userId'
+ * @param {object} params Key/value pairs to fill in path parameters, e.g. { userId: 'abc123' }
  * @returns {HelperInstance} To be passed to `souvlaki.wrap()`
  */
 export const withRoute = createHelper(
