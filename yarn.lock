@@ -1704,6 +1704,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testing-library/user-event@npm:^13.1.9":
+  version: 13.1.9
+  resolution: "@testing-library/user-event@npm:13.1.9"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+  peerDependencies:
+    "@testing-library/dom": ">=7.21.4"
+  checksum: c1430ef9eba6e5e5bb733c72700e0dc54993bbd6fd0481b3cb46b22f6b9c3a0b5306615b0cb718bab8f11b3fe0e5c911cd7253166646697410ed32fa527a7967
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:1":
   version: 1.1.2
   resolution: "@tootallnate/once@npm:1.1.2"
@@ -5470,10 +5481,10 @@ fsevents@^2.3.2:
     souvlaki: ../souvlaki
     typescript: ^4.3.5
   peerDependencies:
-    "@apollo/client": ^3.3.21
-    graphql: ^15.5.1
-    react: ^17.0.2
-    react-dom: ^17.0.2
+    "@apollo/client": "*"
+    graphql: "*"
+    react: "*"
+    react-dom: "*"
     souvlaki: "*"
   languageName: unknown
   linkType: soft
@@ -5498,6 +5509,7 @@ fsevents@^2.3.2:
     "@babel/preset-typescript": ^7.14.5
     "@testing-library/jest-dom": ^5.14.1
     "@testing-library/react": ^12.0.0
+    "@testing-library/user-event": ^13.1.9
     "@types/jest": ^26.0.24
     "@types/react": ^17.0.14
     "@types/react-router-dom": ^5.1.8
@@ -5509,30 +5521,30 @@ fsevents@^2.3.2:
     souvlaki: ../souvlaki
     typescript: ^4.3.5
   peerDependencies:
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-router-dom: ^5.2.0
+    react: "*"
+    react-dom: "*"
+    react-router-dom: "*"
     souvlaki: "*"
   languageName: unknown
   linkType: soft
 
 "souvlaki@file:../souvlaki::locator=souvlaki-apollo%40workspace%3Apackages%2Fsouvlaki-apollo":
-  version: 0.0.2
-  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=d826f4&locator=souvlaki-apollo%40workspace%3Apackages%2Fsouvlaki-apollo"
+  version: 0.1.1
+  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=2055fa&locator=souvlaki-apollo%40workspace%3Apackages%2Fsouvlaki-apollo"
   peerDependencies:
-    react: ^17.0.2
-    react-dom: ^17.0.2
-  checksum: 695e5cdf6cea5ec6c3c5083bfb69ea4a4d7e1b6321d23f06b7ec33867e9293f5c8f6981f22a5ff59017b883a29871ab32e6bd1e95b8dab8ff431cb799a95d82d
+    react: "*"
+    react-dom: "*"
+  checksum: 38b2740c113669fd2cd1295184cd6df7c5f48d62f1e785d98fdb87e51aa52755b5ad629fef81771ff57ad6af453ab175f14967c974789c2dcd6bb842b9451204
   languageName: node
   linkType: hard
 
 "souvlaki@file:../souvlaki::locator=souvlaki-react-router%40workspace%3Apackages%2Fsouvlaki-react-router":
-  version: 0.0.2
-  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=d826f4&locator=souvlaki-react-router%40workspace%3Apackages%2Fsouvlaki-react-router"
+  version: 0.1.1
+  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=2055fa&locator=souvlaki-react-router%40workspace%3Apackages%2Fsouvlaki-react-router"
   peerDependencies:
-    react: ^17.0.2
-    react-dom: ^17.0.2
-  checksum: 695e5cdf6cea5ec6c3c5083bfb69ea4a4d7e1b6321d23f06b7ec33867e9293f5c8f6981f22a5ff59017b883a29871ab32e6bd1e95b8dab8ff431cb799a95d82d
+    react: "*"
+    react-dom: "*"
+  checksum: 38b2740c113669fd2cd1295184cd6df7c5f48d62f1e785d98fdb87e51aa52755b5ad629fef81771ff57ad6af453ab175f14967c974789c2dcd6bb842b9451204
   languageName: node
   linkType: hard
 
@@ -5553,8 +5565,8 @@ fsevents@^2.3.2:
     react-dom: ^17.0.2
     typescript: ^4.3.5
   peerDependencies:
-    react: ^17.0.2
-    react-dom: ^17.0.2
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 

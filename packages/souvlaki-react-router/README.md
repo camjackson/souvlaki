@@ -34,5 +34,19 @@ describe('MyComponent', () => {
 
     //... expect
   });
+
+  it('can notify when the location changes', () => {
+    const onLocationChange = jest.fn();
+
+    render(<TestComponent />, {
+      wrapper: wrap(withRoute('/old-route', {}, onLocationChange)),
+    });
+
+    //... click a link
+
+    expect(onLocationChange).toHaveBeenCalledWith(
+      expect.objectContaining({ pathname: '/new-route' }),
+    );
+  });
 });
 ```
