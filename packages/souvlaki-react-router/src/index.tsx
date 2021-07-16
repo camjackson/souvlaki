@@ -18,10 +18,27 @@ const interpolatePathParams = (
   return result;
 };
 
-type Props = {
+type PathnameChangeNotifierProps = {
+  onPathnameChange: (pathname: string) => void;
+};
+const PathnameChangeNotifier = ({
+  onPathnameChange,
+}: PathnameChangeNotifierProps) => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    onPathnameChange(pathname);
+  }, [pathname]);
+
+  return null;
+};
+
+type LocationChangeNotifierProps = {
   onLocationChange: (location: Location) => void;
 };
-const LocationChangeNotifier = ({ onLocationChange }: Props) => {
+const LocationChangeNotifier = ({
+  onLocationChange,
+}: LocationChangeNotifierProps) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -42,12 +59,16 @@ export const withRoute = createHelper(
   (
       path: string = '/',
       params?: Record<string, string>,
+      onPathnameChange?: (pathname: string) => void,
       onLocationChange?: (location: Location) => void,
     ): React.ComponentType =>
     ({ children }) => {
       const interpolatedPath = interpolatePathParams(path, params);
       return (
         <MemoryRouter initialEntries={[interpolatedPath]}>
+          {onPathnameChange && (
+            <PathnameChangeNotifier onPathnameChange={onPathnameChange} />
+          )}
           {onLocationChange && (
             <LocationChangeNotifier onLocationChange={onLocationChange} />
           )}

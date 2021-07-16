@@ -39,11 +39,25 @@ describe('withRoute', () => {
     expect(screen.getByText('Current id is: abc123')).toBeInTheDocument();
   });
 
+  it('can notify when the pathname changes', () => {
+    const onPathnameChange = jest.fn();
+
+    render(<TestComponent />, {
+      wrapper: wrap(withRoute('/old-route', undefined, onPathnameChange)),
+    });
+
+    userEvent.click(screen.getByRole('link', { name: 'Go to new route' }));
+
+    expect(onPathnameChange).toHaveBeenCalledWith('/new-route');
+  });
+
   it('can notify when the location changes', () => {
     const onLocationChange = jest.fn();
 
     render(<TestComponent />, {
-      wrapper: wrap(withRoute('/old-route', {}, onLocationChange)),
+      wrapper: wrap(
+        withRoute('/old-route', undefined, undefined, onLocationChange),
+      ),
     });
 
     userEvent.click(screen.getByRole('link', { name: 'Go to new route' }));

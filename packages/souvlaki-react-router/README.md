@@ -35,11 +35,25 @@ describe('MyComponent', () => {
     //... expect
   });
 
+  it('can notify when the pathname changes', () => {
+    const onPathnameChange = jest.fn();
+
+    render(<TestComponent />, {
+      wrapper: wrap(withRoute('/old-route', {}, onPathnameChange)),
+    });
+
+    //... click a link
+
+    expect(onPathnameChange).toHaveBeenCalledWith('/new-route');
+  });
+
   it('can notify when the location changes', () => {
     const onLocationChange = jest.fn();
 
     render(<TestComponent />, {
-      wrapper: wrap(withRoute('/old-route', {}, onLocationChange)),
+      wrapper: wrap(
+        withRoute('/old-route', undefined, undefined, onLocationChange),
+      ),
     });
 
     //... click a link
