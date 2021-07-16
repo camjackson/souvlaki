@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom';
 import fetch from 'cross-fetch';
 import { withApollo } from '..';
+import { wrap } from 'souvlaki';
 import { useApolloClient } from '@apollo/client';
 import { render, screen } from '@testing-library/react';
-import { wrap } from 'souvlaki';
 
 window.fetch = fetch;
 
