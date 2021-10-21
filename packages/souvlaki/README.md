@@ -80,7 +80,7 @@ Then you select, configure, and combine the ones you need for each test:
 ```jsx
 // MyTestSuite.test.jsx
 import { wrap } from 'souvlaki';
-import { withCart, withRoute, withApollo } from './testWrappers.js';
+import { withCart, withRoute, withApollo } from './testWrappers';
 
 it('shows the items in the shopping cart', () => {
   const cartItem = { name: 'Large lamb souvlaki' };

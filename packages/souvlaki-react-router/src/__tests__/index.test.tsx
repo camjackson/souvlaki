@@ -4,7 +4,6 @@ import { wrap } from 'souvlaki';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Location } from 'history';
 
 const TestComponent = () => {
   const location = useLocation();
@@ -12,8 +11,9 @@ const TestComponent = () => {
 
   return (
     <>
-      <span>Current location is: {location.pathname}</span>
-      <span>Current id is: {id}</span>
+      <span>Location: {location.pathname}</span>
+      <span>ID: {id}</span>
+      <span>Search: {location.search}</span>
       <Link to="/new-route">Go to new route</Link>
     </>
   );
@@ -23,9 +23,7 @@ describe('withRoute', () => {
   it('can provide a route with no params', () => {
     render(<TestComponent />, { wrapper: wrap(withRoute('/some-page')) });
 
-    expect(
-      screen.getByText('Current location is: /some-page'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Location: /some-page')).toBeInTheDocument();
   });
 
   it('can provide a route with params', () => {
@@ -33,10 +31,17 @@ describe('withRoute', () => {
       wrapper: wrap(withRoute('/users/:id', { id: 'abc123' })),
     });
 
-    expect(
-      screen.getByText('Current location is: /users/abc123'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('Current id is: abc123')).toBeInTheDocument();
+    expect(screen.getByText('Location: /users/abc123')).toBeInTheDocument();
+    expect(screen.getByText('ID: abc123')).toBeInTheDocument();
+  });
+
+  it('can provide a route with query params', () => {
+    render(<TestComponent />, {
+      wrapper: wrap(withRoute('/some-page?q=some-search')),
+    });
+
+    expect(screen.getByText('Location: /some-page')).toBeInTheDocument();
+    expect(screen.getByText('Search: ?q=some-search')).toBeInTheDocument();
   });
 
   it('can notify when the pathname changes', () => {

@@ -64,6 +64,8 @@ export const withRoute = createHelper(
     ): React.ComponentType =>
     ({ children }) => {
       const interpolatedPath = interpolatePathParams(path, params);
+      const pathWithoutQueryParams = path.replace(/\?.*/, '');
+
       return (
         <MemoryRouter initialEntries={[interpolatedPath]}>
           {onPathnameChange && (
@@ -72,7 +74,7 @@ export const withRoute = createHelper(
           {onLocationChange && (
             <LocationChangeNotifier onLocationChange={onLocationChange} />
           )}
-          <Route path={path}>{children}</Route>
+          <Route path={pathWithoutQueryParams}>{children}</Route>
         </MemoryRouter>
       );
     },
