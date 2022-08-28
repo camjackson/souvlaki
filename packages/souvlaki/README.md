@@ -107,65 +107,65 @@ it('displays results for the given search string', () => {
 });
 ```
 
-For more complex scenarios, you can define a _composite wrapper_. This is a wrapper that can be applied by any one of several helper functions.
+For complex context providers, it can still feel too heavy to have a single all-or-nothing
+helper like: `withBigHugeThing(somethingComplex)`. It's nicer if we can break
+it down into several smaller helpers, which later get re-combined into a single
+instance of the context provider if any of those helpers were applied. That's
+what _composite wrappers_ do:
 
 ```jsx
 // Create two different helper functions
 // Either (or both) of these can be called to apply the wrapper
-const [withProfile, withProfileActions] = createHelpers(
+const [withCartState, withCartActions] = createHelpers(
   // The wrapper function receives two corresponding arrays of arguments
-  // Each array may be empty if the corresponding helper was not used
-  ([name, yearJoined], [actions]) =>
+  // Each array may end up empty if the corresponding helper was not used
+  ([state], [actions]) =>
     ({ children }) => (
-      <PlayerProfileProvider state={{ name, yearJoined }} actions={actions}>
+      <ShoppingCartContext.Provider value={{ state, actions }}>
         {children}
-      </PlayerProfileProvider>;
+      </ShoppingCartContext.Provider>;
     ),
 );
 
-it('shows the player info', () => {
-  // Apply the wrapper with just the profile state
-  render(<PlayerProfilePage />, {
-    wrapper: wrap(withProfile('Jason Blake', '1999')),
+it('shows the count of items in the cart', () => {
+  // Apply the wrapper with just the cart state (don't care about actions)
+  render(<ShoppingCart />, {
+    wrapper: wrap(withCartState({ items: ['Large chips'] })),
   });
 
-  expect(screen.getByText('Jason Blake')).toBeInTheDocument();
-  expect(screen.getByText('Joined in 1999')).toBeInTheDocument();
+  expect(screen.getByText('1 item(s)')).toBeInTheDocument();
 });
 
-it('can delete the profile', () => {
-  const deleteProfile = jest.fn();
+it('can empty the cart', () => {
+  const emptyTheCart = jest.fn();
 
-  // Apply the wrapper with just the profile actions
-  render(<PlayerProfilePage />, {
-    wrapper: wrap(withProfileActions({ deleteProfile })),
+  // Apply the wrapper with just the mocked cart actions (don't care about state)
+  render(<ShoppingCart />, {
+    wrapper: wrap(withCartActions({ emptyTheCart })),
   });
 
-  const deleteButton = screen.getByRole('button', { name: 'Delete profile' });
-  userEvent.click(deleteButton);
+  const emptyButton = screen.getByRole('button', { name: 'Empty cart' });
+  userEvent.click(emptyButton);
 
-  expect(deleteProfile).toHaveBeenCalled();
+  expect(emptyTheCart).toHaveBeenCalled();
 });
 
-it('can update the profile', () => {
-  const updateProfile = jest.fn();
+it('can increase the count on an item', () => {
+  const addItem = jest.fn();
 
-  // Apply the wrapper with both the profile state _and_ actions
-  render(<PlayerProfilePage />, {
+  // Apply the wrapper with both the cart state _and_ mocked cart actions
+  // Only a single context provider will be instantiated
+  render(<ShoppingCart />, {
     wrapper: wrap(
-      withProfile('Jason Blake', '1999-11-25'),
-      withProfileActions({ updateProfile }),
+      withCartState({ items: ['Saganaki'] }),
+      withCartActions({ addItem }),
     ),
   });
 
-  const heightInput = screen.getByRole('input', { name: 'Height' });
-  userEvent.type(heightInput, '189 cm');
+  const increaseButton = screen.getByRole('button', { name: '+' });
+  userEvent.click(increaseButton);
 
-  expect(updateProfile).toHaveBeenCalledWith({
-    name: 'Jason Blake',
-    yearJoined: 1999,
-    height: '189 cm',
-  });
+  expect(addItem).toHaveBeenCalledWith('Saganaki');
 });
 ```
 
