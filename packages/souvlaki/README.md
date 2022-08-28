@@ -54,9 +54,15 @@ export const BigHugeTestWrapper = ({
 
 This works OK, but as your test suite grows to cover lots of different scenarios, the test wrapper often becomes heavily parameterised and a bit unweildy.
 
-What we really want is smaller, composable test wrappers, and an easy way to grab just the ones we need, configure them for a specific test case, and then combine them.
+What we really want is an easy way to:
+
+1. create small, composable test wrappers
+2. select and configure them for each test
+3. recombine them into a wrapper component
 
 ## The solution
+
+Souvlaki gives us a few different functions to solve the above problems.
 
 ### `createHelper`
 
@@ -91,8 +97,7 @@ import { wrap } from 'souvlaki';
 import { withCart, withRoute, withApollo } from './testWrappers';
 
 it('shows the items in the shopping cart', () => {
-  const cartItem = { name: 'Large lamb souvlaki' };
-  const cart = { items: [cartItem] };
+  const cart = { items: ['Large lamb souvlaki'] };
 
   render(<ShoppingCart />, { wrapper: wrap(withCart(cart)) });
 
@@ -117,31 +122,29 @@ it('displays results for the given search string', () => {
 
 ### `createContextHelper`
 
-Our `withCart` helper above is a very common case: a plain React context provider,
-with a value given either when creating the helper or when applying it. Souvlaki
-provides a convenient shorthand for this:
+Our `withCart` helper above is a very common case: a plain React context provider.
+Souvlaki provides a convenient shorthand for this:
 
 ```tsx
 import { createContextHelper } from 'souvlaki';
 
+// With a default value ahead of time:
 const withCart = createContextHelper(ShoppingCartContext, { items: [] });
-// OR:
+// or without one:
 const withCart = createContextHelper(ShoppingCartContext);
 ```
 
-Either of the above is valid, but in the second example, a value will be mandatory
-when applying the wrapper, i.e. `withCart(someValue)`.
+Either of the above is valid, but in the second example the value will be
+mandatory when applying the wrapper, i.e. `withCart(thisValueIsRequired)`.
 
 ### `createHelpers` (note the s!)
 
-For complex context providers, it can still feel too heavy to have a single all-or-nothing
-helper like: `withBigHugeThing(somethingComplex)`. It's nicer if we can break
-it down into several smaller helpers, which later get re-combined into a single
-instance of the context provider if any of those helpers were applied.
+Sometimes even a single context provider can be so complex that we want to break
+down its application into several helpers, and then be able to apply any combination
+of those helpers to instantiate the provider.
 
-That's what _composite wrappers_ do. Imagine if our shopping cart context had
-both state (data) and actions (functions), and we want to apply the context
-by specifying either the state, the actions, or both:
+Imagine if our shopping cart context had both state (data) and actions (functions),
+and we wanted to apply the context by specifying either the state, the actions, or both:
 
 ```jsx
 import { createHelpers, wrap } from 'souvlaki';
