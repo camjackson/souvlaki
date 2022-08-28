@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import { createContextHelper } from './createContextHelper';
 import {
   createHelper,
   SimpleHelper,
@@ -21,6 +22,7 @@ type InstanceArray = (
 export {
   createHelper,
   createHelpers,
+  createContextHelper,
   SimpleHelper,
   SimpleHelperInstance,
   SimpleWrapper,

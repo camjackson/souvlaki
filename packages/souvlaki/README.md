@@ -54,6 +54,8 @@ What we really want is smaller, composable test wrappers, and an easy way to gra
 
 ## The solution
 
+### `createHelper`
+
 Souvlaki lets you define all the wrappers that you need across your test suite:
 
 ```jsx
@@ -74,6 +76,8 @@ export const withApollo = createHelper(() => ({ children }) => (
   <ApolloProvider client={buildTestApolloClient()}>{children}</ApolloProvider>
 ));
 ```
+
+### `wrap`
 
 Then you select, configure, and combine the ones you need for each test:
 
@@ -107,18 +111,43 @@ it('displays results for the given search string', () => {
 });
 ```
 
+### `createContextHelper`
+
+Our `withCart` helper above is a very common case: a plain React context provider,
+with a value given either when creating the helper or when applying it. Souvlaki
+provides a convenient shorthand for this:
+
+```tsx
+import { createContextHelper } from 'souvlaki';
+
+const withCart = createContextHelper(ShoppingCartContext, { items: [] });
+// OR:
+const withCart = createContextHelper(ShoppingCartContext);
+```
+
+Either of the above is valid, but in the second example, a value will be mandatory
+when applying the wrapper, i.e. `withCart(someValue)`.
+
+### `createHelpers` (note the s!)
+
 For complex context providers, it can still feel too heavy to have a single all-or-nothing
 helper like: `withBigHugeThing(somethingComplex)`. It's nicer if we can break
 it down into several smaller helpers, which later get re-combined into a single
-instance of the context provider if any of those helpers were applied. That's
-what _composite wrappers_ do:
+instance of the context provider if any of those helpers were applied.
+
+That's what _composite wrappers_ do. Imagine if our shopping cart context had
+both state (data) and actions (functions), and we want to apply the context
+by specifying either the state, the actions, or both:
 
 ```jsx
+import { createHelpers, wrap } from 'souvlaki';
+
 // Create two different helper functions
 // Either (or both) of these can be called to apply the wrapper
 const [withCartState, withCartActions] = createHelpers(
-  // The wrapper function receives two corresponding arrays of arguments
-  // Each array may end up empty if the corresponding helper was not used
+  // The wrapper function receives two arrays as its arguments. Each array
+  // corresponds to the parameters of the helper functions that we're creating.
+  // Each array may end up empty if the corresponding helper was not applied.
   ([state], [actions]) =>
     ({ children }) => (
       <ShoppingCartContext.Provider value={{ state, actions }}>
@@ -189,7 +218,7 @@ Creates a helper function that can be used to apply the supplied wrapper.
 
 **Returns**:
 
-`Helper: (...args) => void`
+`Helper: (...args) => HelperInstance`
 
 - A helper function that you can call to apply the given wrapper.
 
@@ -232,6 +261,39 @@ const withUser = createHelper(
 render(<User />, { wrapper: wrap(withUser('Cam', 'Jackson', 19)) });
 ```
 
+### `createContextHelper(Context, defaultValue) => Helper`
+
+**Parameters**:
+
+- `Context`: `React.Context`
+  - A context object, one returned by `React.createContext`.
+
+**Returns**:
+
+`Helper: (...args) => HelperInstance`
+
+- A helper function that you can call to apply the given wrapper.
+
+**Example 1: A context helper with a default value**
+
+```tsx
+const withUser = createContextHelper(UserContext.Provider, someDefaultUser);
+
+// In a test
+render(<User />, { wrapper: wrap(withUser()) });
+// OR: override the default
+render(<User />, { wrapper: wrap(withUser(someSpecificUser)) });
+```
+
+**Example 2: A context helper with no default value**
+
+```tsx
+const withUser = createContextHelper(UserContext.Provider);
+
+// In a test, the user is now mandatory here:
+render(<User />, { wrapper: wrap(withUser(someUser)) });
+```
+
 ### `createHelpers(wrapperFn) => Helper[]`
 
 Creates multiple helper functions any or all of which can be used to apply the supplied wrapper.
@@ -243,7 +305,13 @@ Creates multiple helper functions any or all of which can be used to apply the s
 
 **Returns**:
 
-`Helper[]: [(...args1) => void, ..., (...argsN) => void]`
+```
+Helper[]: [
+  (...args1) => HelperInstance,
+  ...,
+  (...argsN) => HelperInstance,
+]
+```
 
 - An array of helper functions that you can call to apply the given wrapper. You can use any number of them, and the wrapper will be applied once only, with all of the arguments that were provided to all of the helpers.
 
