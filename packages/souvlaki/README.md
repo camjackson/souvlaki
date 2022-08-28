@@ -16,7 +16,7 @@ Composable React.js test wrappers, making it easy to test context-heavy componen
   - [`createHelpers()`](#createhelperswrapperfn--helper)
   - [`wrap()`](#wraphelperinstances--reactcomponent)
 - [Companion libraries](#companion-libraries) (apollo-client, react-router)
-- [What's with the name](#whats-with-the-name)
+- [What's with the name?](#whats-with-the-name)
 
 ```sh
 yarn add -D souvlaki
@@ -208,9 +208,11 @@ it('can increase the count on an item', () => {
     ),
   });
 
+  // When we click the only '+' button on the screen
   const increaseButton = screen.getByRole('button', { name: '+' });
   userEvent.click(increaseButton);
 
+  // Then a second saganaki is added
   expect(addItem).toHaveBeenCalledWith('Saganaki');
 });
 ```
@@ -370,7 +372,7 @@ Composes the given helper instances together to create a React component that yo
 
 **Example**:
 
-- See above
+- See all previous examples.
 
 ## Companion libraries
 
