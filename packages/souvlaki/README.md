@@ -2,9 +2,21 @@
 
 Composable React.js test wrappers, making it easy to test context-heavy components.
 
-- [Jump to example usage](#the-solution)
-- [Jump to API reference](#api-reference)
-- [Jump to companion libraries](#companion-libraries)
+**Table of contents:**
+
+- [Example usage](#the-solution)
+  - [Creating helpers](#creating-helpers)
+  - [Applying helpers](#applying-helpers)
+  - [A shorthand for context providers](#a-shorthand-for-context-providers)
+  - [Advanced: Composite helpers](#advanced-composite-helpers)
+- [Usage with TypeScript](#usage-with-typescript)
+- [API reference](#api-reference)
+  - [`createHelper()`](#createhelperwrapperfn--helper)
+  - [`createContextHelper()`](#createcontexthelpercontext-defaultvalue--helper)
+  - [`createHelpers()`](#createhelperswrapperfn--helper)
+  - [`wrap()`](#wraphelperinstances--reactcomponent)
+- [Companion libraries](#companion-libraries) (apollo-client, react-router)
+- [What's with the name](#whats-with-the-name)
 
 ```sh
 yarn add -D souvlaki
@@ -62,9 +74,7 @@ What we really want is an easy way to:
 
 ## The solution
 
-Souvlaki gives us a few different functions to solve the above problems.
-
-### `createHelper`
+### Creating helpers
 
 Souvlaki lets you define all the wrappers that you need across your test suite:
 
@@ -87,7 +97,7 @@ export const withApollo = createHelper(() => ({ children }) => (
 ));
 ```
 
-### `wrap`
+### Applying helpers
 
 Then you select, configure, and combine the ones you need for each test:
 
@@ -120,7 +130,7 @@ it('displays results for the given search string', () => {
 });
 ```
 
-### `createContextHelper`
+### A shorthand for context providers
 
 Our `withCart` helper above is a very common case: a plain React context provider.
 Souvlaki provides a convenient shorthand for this:
@@ -137,7 +147,7 @@ const withCart = createContextHelper(ShoppingCartContext);
 Either of the above is valid, but in the second example the value will be
 mandatory when applying the wrapper, i.e. `withCart(thisValueIsRequired)`.
 
-### `createHelpers` (note the s!)
+### Advanced: Composite helpers
 
 Sometimes even a single context provider can be so complex that we want to break
 down its application into several helpers, and then be able to apply any combination
