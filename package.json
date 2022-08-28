@@ -9,7 +9,8 @@
   "scripts": {
     "prepare": "husky install",
     "build": "yarn workspaces foreach -vip run build",
-    "test": "yarn workspaces foreach -vip run test-once"
+    "test": "yarn workspaces foreach -vip run test-once",
+    "typecheck": "yarn workspaces foreach -vip run typecheck"
   },
   "devDependencies": {
     "husky": ">=6",

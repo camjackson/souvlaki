@@ -184,7 +184,7 @@ Creates a helper function that can be used to apply the supplied wrapper.
 
 **Parameters**:
 
-- `wrapperFn`: `(...args) => React.ComponentType`
+- `wrapperFn`: `(...args) => ReactComponent`
   - A function that receives whatever values were passed to the helper, and returns a React component that wraps its children.
 
 **Returns**:
@@ -193,7 +193,29 @@ Creates a helper function that can be used to apply the supplied wrapper.
 
 - A helper function that you can call to apply the given wrapper.
 
-**Example**:
+**Example 1: A helper that wraps its children with the given component (no props or helper params)**
+
+```tsx
+const withUser = createHelper(() => UserContext.Provider);
+
+// In a test
+render(<User />, { wrapper: wrap(withUser()) });
+```
+
+**Example 2: A helper that wraps its children with the given component, with hard-coded props (no helper params)**
+
+```tsx
+const withUser = createHelper(() => ({ children }) => (
+  <UserContext.Provider value={{ name: 'Cam Jackson' }}>
+    {children}
+  </UserContext.Provider>
+));
+
+// In a test
+render(<User />, { wrapper: wrap(withUser()) });
+```
+
+**Example 3: A helper that wraps its children with the given component, with the helper's params passed as a props**
 
 ```tsx
 const withUser = createHelper(
@@ -216,14 +238,14 @@ Creates multiple helper functions any or all of which can be used to apply the s
 
 **Parameters**:
 
-- `wrapperFn`: `([...args1], ..., [...argsN]) => React.ComponentType`
+- `wrapperFn`: `([...args1], ..., [...argsN]) => ReactComponent`
   - A function that receives multiple arrays of arguments, each one being populated (or not) with the values passed to a corresponding helper. It returns a React component that wraps its children.
 
 **Returns**:
 
 `Helper[]: [(...args1) => void, ..., (...argsN) => void]`
 
-- An array of helper functions that you can call to apply the given wrapper. You can use any number of them at once, and the wrapper will be applied once only, with all of the arguments that were provided to all of the helpers.
+- An array of helper functions that you can call to apply the given wrapper. You can use any number of them, and the wrapper will be applied once only, with all of the arguments that were provided to all of the helpers.
 
 **Example**:
 
@@ -238,15 +260,15 @@ const [withName, withAge] = createHelpers(
       ),
 );
 
-// In a test
+// In a test, use one:
 render(<User />, { wrapper: wrap(withName('Cam', 'Jackson')) });
-// Or:
-render(<User />, { wrapper: wrap(age(19)) });
-// Or:
+// Or the other:
+render(<User />, { wrapper: wrap(withAge(19)) });
+// Or both (in either order):
 render(<User />, { wrapper: wrap(withName('Cam', 'Jackson'), withAge(19)) });
 ```
 
-### `wrap(...helperInstances) => React.ComponentType`
+### `wrap(...helperInstances) => ReactComponent`
 
 Composes the given helper instances together to create a React component that you can wrap around other components.
 

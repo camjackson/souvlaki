@@ -1,17 +1,24 @@
-import { ComponentType } from 'react';
+import { ReactComponent } from './util';
 
 /**
- * A function that takes args collected by multiple helpers, and returns a React component.
+ * A function that takes a 2D array of args, collected by multiple helpers, and returns a React component.
+ * This is the double-arrow function that is passed into `createHelpers`.
  */
-type CompositeWrapper<Args extends any[][]> = (...args: Args) => ComponentType;
+export type CompositeWrapper<Args extends unknown[][]> = (
+  ...args: Args
+) => ReactComponent;
 
 /**
  * An instantiated helper from a composite wrapper, to be passed to `wrap`.
+ * This is the object returned by calling `withWhatever(someArgs)`.
+ * It contains the wrapper function, the args given to this instance of it,
+ * and the index of this helper within the array of helpers that make up the composite
  */
 export type CompositeHelperInstance<
-  HelperArgs extends any[],
-  WrapperArgs extends any[][],
+  HelperArgs extends unknown[], // The args of this function within the helper
+  WrapperArgs extends unknown[][], // The args of the whole composite hlper
 > = {
+  helperType: 'composite';
   wrapper: CompositeWrapper<WrapperArgs>;
   args: HelperArgs;
   helperIndex: number;
@@ -19,10 +26,12 @@ export type CompositeHelperInstance<
 
 /**
  * A function that takes args for a composite wrapper and returns a helper instance.
+ * These are the functions that are created and returned, as an array, by `createHelpers`.
  */
-type CompositeHelper<HelperArgs extends any[], WrapperArgs extends any[][]> = (
-  ...args: HelperArgs
-) => CompositeHelperInstance<HelperArgs, WrapperArgs>;
+export type CompositeHelper<
+  HelperArgs extends unknown[],
+  WrapperArgs extends unknown[][],
+> = (...args: HelperArgs) => CompositeHelperInstance<HelperArgs, WrapperArgs>;
 
 /**
  * Creates multiple helper functions any or all of which can be used to apply
@@ -31,22 +40,25 @@ type CompositeHelper<HelperArgs extends any[], WrapperArgs extends any[][]> = (
  * @param {CompositeWrapper} wrapper A function that receives multiple arrays of arguments,
  * each one being populated (or not) with the values passed to a corresponding helper.
  * It returns a React component that wraps its children.
- * @returns {Helper[]} An array of helper functions that you can call to apply the given wrapper.
+ * @returns {CompositeHelper[]} An array of helper functions that you can call to apply the given wrapper.
+ * You can use any number of them, and the wrapper will be applied once only,
+ * with all of the arguments that were provided to all of the helpers.
  */
-export const createHelpers = <WrapperArgs extends any[][]>(
+export const createHelpers = <WrapperArgs extends unknown[][]>(
   wrapper: CompositeWrapper<WrapperArgs>,
 ): {
+  // This is an array whose keys (i.e. length) matches the args array-of-arrays
   [Index in keyof WrapperArgs]: CompositeHelper<
-    // @ts-ignore
     WrapperArgs[Index],
     WrapperArgs
   >;
 } =>
-  range(wrapper.length).map((helperIndex) => (...args: any[]) => ({
+  range(wrapper.length).map((helperIndex) => (...args: unknown[]) => ({
+    helperType: 'composite',
     wrapper,
     args,
     helperIndex,
-  })) as any;
+  })) as any; // TODO: Fix?
 
 /**
  * E.g. range(3) -> [0, 1, 2]

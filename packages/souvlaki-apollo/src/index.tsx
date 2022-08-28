@@ -5,7 +5,6 @@ import {
   HttpLink,
   InMemoryCache,
 } from '@apollo/client';
-import React from 'react';
 
 const createDefaultClient = () =>
   new ApolloClient({
@@ -20,7 +19,7 @@ const createDefaultClient = () =>
  * @returns {HelperInstance} A helper instance to be passed to `souvlaki.wrap()`
  */
 export const withApollo = createHelper(
-  (client?: ApolloClient<any>): React.ComponentType =>
+  (client?: ApolloClient<any>) =>
     ({ children }) =>
       (
         <ApolloProvider client={client || createDefaultClient()}>

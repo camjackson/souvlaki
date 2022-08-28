@@ -15,8 +15,8 @@ export const Section = ({ children }: PropsWithChildren<{}>) => (
 );
 
 export const TitlePrefixer = ({
-  children,
   title,
+  children,
 }: PropsWithChildren<{ title: string }>) => (
   <>
     <h1>{title}</h1>
@@ -25,9 +25,9 @@ export const TitlePrefixer = ({
 );
 
 export const TitleAndVotesPrefixer = ({
-  children,
   title,
   votes,
+  children,
 }: PropsWithChildren<{ title: string; votes: number }>) => (
   <>
     {title && <h1>{title}</h1>}
