@@ -37,12 +37,16 @@ render(<MyComponent />, { wrapper: MyTestWrapper });
 The challenge is setting up the wrapper exactly as you need it for each test. One common approach is to create a single mega-wrapper that covers everything:
 
 ```jsx
-export const BigHugeTestWrapper = ({ children }) => (
-  <ShoppingCartContext.Provider>
-    <MemoryRouter>
-      <ApolloProvider client={buildTestApolloClient()}>
-        {children}
-      </ApolloProvider>
+// This is pretty clunky, even with just three providers with a single prop each!
+export const BigHugeTestWrapper = ({
+  cartState = {},
+  currentRoute = '/',
+  apolloClient = buildTestApolloClient(),
+  children,
+}) => (
+  <ShoppingCartContext.Provider value={cartState}>
+    <MemoryRouter initialValues={[currentRoute]}>
+      <ApolloProvider client={apolloClient}>{children}</ApolloProvider>
     </MemoryRouter>
   </ShoppingCartContext.Provider>
 );
