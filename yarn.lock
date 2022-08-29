@@ -5525,22 +5525,22 @@ fsevents@^2.3.2:
   linkType: soft
 
 "souvlaki@file:../souvlaki::locator=souvlaki-apollo%40workspace%3Apackages%2Fsouvlaki-apollo":
-  version: 0.1.1
-  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=4e2e10&locator=souvlaki-apollo%40workspace%3Apackages%2Fsouvlaki-apollo"
+  version: 0.3.0
+  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=7d8e22&locator=souvlaki-apollo%40workspace%3Apackages%2Fsouvlaki-apollo"
   peerDependencies:
     react: "*"
     react-dom: "*"
-  checksum: cd9882f769a3a6b1bdd20b37e14f9f7febb34d488f6c6e46eb75c3c8d45b5e10f889066a8cdcb7f4739549d6d9abc1ab66723992c24d5313f97d742019395a11
+  checksum: cb1a75bee9debc0cf03cc958eab5276d4c5cc8804f408764fd5537faeb108b1c7a385c443b950f53d4f6104b2f26d44a98de355a18d323462d69ea2da3dc0f13
   languageName: node
   linkType: hard
 
 "souvlaki@file:../souvlaki::locator=souvlaki-react-router%40workspace%3Apackages%2Fsouvlaki-react-router":
-  version: 0.1.1
-  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=4e2e10&locator=souvlaki-react-router%40workspace%3Apackages%2Fsouvlaki-react-router"
+  version: 0.3.0
+  resolution: "souvlaki@file:../souvlaki#../souvlaki::hash=7d8e22&locator=souvlaki-react-router%40workspace%3Apackages%2Fsouvlaki-react-router"
   peerDependencies:
     react: "*"
     react-dom: "*"
-  checksum: cd9882f769a3a6b1bdd20b37e14f9f7febb34d488f6c6e46eb75c3c8d45b5e10f889066a8cdcb7f4739549d6d9abc1ab66723992c24d5313f97d742019395a11
+  checksum: cb1a75bee9debc0cf03cc958eab5276d4c5cc8804f408764fd5537faeb108b1c7a385c443b950f53d4f6104b2f26d44a98de355a18d323462d69ea2da3dc0f13
   languageName: node
   linkType: hard
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## Un-released changes
+## All packages: v0.3.0
 
 ## `souvlaki`
 

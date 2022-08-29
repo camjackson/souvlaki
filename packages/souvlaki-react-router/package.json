@@ -1,6 +1,6 @@
 {
   "name": "souvlaki-react-router",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Souvlaki wrapper helper for react-router.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
