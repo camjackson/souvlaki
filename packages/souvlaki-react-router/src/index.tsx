@@ -1,5 +1,10 @@
-import { createHelper } from 'souvlaki';
-import { MemoryRouter, Route, useLocation } from 'react-router-dom';
+import {
+  CompositeHelper,
+  CompositeHelperInstance,
+  createHelpers,
+  SimpleHelper,
+} from 'souvlaki';
+import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Location } from 'history';
 import { useEffect } from 'react';
 
@@ -18,50 +23,30 @@ const interpolatePathParams = (
   return result;
 };
 
-type PathnameChangeNotifierProps = {
-  onPathnameChange: (pathname: string) => void;
+type WatcherProps = {
+  onPathnameChange?: (pathname: string) => void;
+  onLocationChange?: (location: Location) => void;
 };
-const PathnameChangeNotifier = ({
-  onPathnameChange,
-}: PathnameChangeNotifierProps) => {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    onPathnameChange(pathname);
-  }, [pathname]);
-
-  return null;
-};
-
-type LocationChangeNotifierProps = {
-  onLocationChange: (location: Location) => void;
-};
-const LocationChangeNotifier = ({
-  onLocationChange,
-}: LocationChangeNotifierProps) => {
+const Watcher = ({ onPathnameChange, onLocationChange }: WatcherProps) => {
   const location = useLocation();
 
   useEffect(() => {
-    onLocationChange(location);
+    onPathnameChange?.(location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    onLocationChange?.(location);
   }, [location]);
 
   return null;
 };
 
-/**
- * A helper you can call to apply a MemoryRouter wrapper to your components.
- * @param {string} path The current path, e.g., '/home', or '/users/:userId'
- * @param {object} params Key/value pairs to fill in path parameters, e.g. { userId: 'abc123' }
- * @param {function} onPathnameChange A function that's called with the new pathname on any change
- * @param {function} onLocationChange A function that's called with the new location on any change
- * @returns {HelperInstance} A helper instance to be passed to `souvlaki.wrap()`
- */
-export const withRoute = createHelper(
+export const routeHelpers = createHelpers(
   (
-      path: string = '/',
-      params?: Record<string, string>,
-      onPathnameChange?: (pathname: string) => void,
-      onLocationChange?: (location: Location) => void,
+      [path = '/', params = {}]: [string?, Record<string, string>?],
+      [otherRoutes = []]: [string[]],
+      [onPathnameChange]: [((pathname: string) => void)?],
+      [onLocationChange]: [((location: Location) => void)?],
     ) =>
     ({ children }) => {
       const interpolatedPath = interpolatePathParams(path, params);
@@ -69,14 +54,55 @@ export const withRoute = createHelper(
 
       return (
         <MemoryRouter initialEntries={[interpolatedPath]}>
-          {onPathnameChange && (
-            <PathnameChangeNotifier onPathnameChange={onPathnameChange} />
-          )}
-          {onLocationChange && (
-            <LocationChangeNotifier onLocationChange={onLocationChange} />
-          )}
-          <Route path={pathWithoutQueryParams}>{children}</Route>
+          <Watcher
+            onPathnameChange={onPathnameChange}
+            onLocationChange={onLocationChange}
+          />
+          <Routes>
+            <Route path={pathWithoutQueryParams} element={children} />
+            {otherRoutes.map((path) => (
+              <Route key={path} path={path} element={<></>} />
+            ))}
+          </Routes>
         </MemoryRouter>
       );
     },
 );
+
+/**
+ * A helper you can call to apply a MemoryRouter wrapper to your components.
+ * @param {string} path The current path, e.g., '/home', or '/users/:userId'
+ * @param {object} params Key/value pairs to fill in path parameters, e.g. { userId: 'abc123' }
+ * @returns {HelperInstance} A helper instance to be passed to `souvlaki.wrap()`
+ */
+export const withRoute = routeHelpers[0] as (
+  path?: string,
+  params?: Record<string, string>,
+) => CompositeHelperInstance<any, any>;
+
+/**
+ * A helper you can call to specify additional empty routes, which can then be linked to
+ * @param {string[]} paths Route paths, other than the current one, which should be available to link to
+ * @returns {HelperInstance} A helper instance to be passed to `souvlaki.wrap()`
+ */
+export const withOtherRoutes = routeHelpers[1] as (
+  paths: string[],
+) => CompositeHelperInstance<any, any>;
+
+/**
+ * A helper you can call to be notified of changes to the pathname
+ * @param {function} onPathnameChange A function that's called with the new pathname on any change
+ * @returns {HelperInstance} A helper instance to be passed to `souvlaki.wrap()`
+ */
+export const withPathnameWatcher = routeHelpers[2] as (
+  onPathnameChange: () => void,
+) => CompositeHelperInstance<any, any>;
+
+/**
+ * A helper you can call to be notified of changes to the location
+ * @param {function} onLocationChange A function that's called with the new location on any change
+ * @returns {HelperInstance} A helper instance to be passed to `souvlaki.wrap()`
+ */
+export const withLocationWatcher = routeHelpers[3] as (
+  onLocationChange: () => void,
+) => CompositeHelperInstance<any, any>;

@@ -15,16 +15,21 @@ npm i -D souvlaki souvlaki-react-router
 
 ```tsx
 // MyComponent.test.tsx
-import { wrap } from 'souvlaki';
-import { withRoute } from 'souvlaki-react-router';
 import { render, screen } from '@testing-library/react';
+import { wrap } from 'souvlaki';
+import {
+  withRoute,
+  withOtherRoutes,
+  withLocationWatcher,
+  withPathnameWatcher,
+} from 'souvlaki-react-router';
 import MyComponent from '../MyComponent';
 
 describe('MyComponent', () => {
   it('can provide a route with no params', () => {
     render(<TestComponent />, { wrapper: wrap(withRoute('/some-page')) });
 
-    //... expect
+    // expect() things to have been rendered inside the given route
   });
 
   it('can provide a route with params', () => {
@@ -32,17 +37,33 @@ describe('MyComponent', () => {
       wrapper: wrap(withRoute('/users/:id', { id: 'abc123' })),
     });
 
-    //... expect
+    // expect() things to have been rendered with the given path params
+  });
+
+  it('can provide additional empty routes that can be linked to', () => {
+    render(<TestComponent />, {
+      wrapper: wrap(
+        withRoute('/current-route'),
+        withOtherRoutes(['/other-route', '/third-route']),
+      ),
+    });
+
+    // can now safely click links to the given 'other' routes and not
+    // (you will get console errors otherwise)
   });
 
   it('can notify when the pathname changes', () => {
     const onPathnameChange = jest.fn();
 
     render(<TestComponent />, {
-      wrapper: wrap(withRoute('/old-route', {}, onPathnameChange)),
+      wrapper: wrap(
+        withRoute('/current-route'),
+        withOtherRoutes(['/new-route']),
+        withPathnameWatcher(onPathnameChange),
+      ),
     });
 
-    //... click a link
+    // [click a link]
 
     expect(onPathnameChange).toHaveBeenCalledWith('/new-route');
   });
@@ -52,11 +73,13 @@ describe('MyComponent', () => {
 
     render(<TestComponent />, {
       wrapper: wrap(
-        withRoute('/old-route', undefined, undefined, onLocationChange),
+        withRoute('/current-route'),
+        withOtherRoutes(['/new-route']),
+        withLocationWatcher(onLocationChange),
       ),
     });
 
-    //... click a link
+    // [click a link]
 
     expect(onLocationChange).toHaveBeenCalledWith(
       expect.objectContaining({ pathname: '/new-route' }),
