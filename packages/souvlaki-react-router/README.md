@@ -48,8 +48,9 @@ describe('MyComponent', () => {
       ),
     });
 
-    // can now safely click links to the given 'other' routes and not
-    // (you will get console errors otherwise)
+    // can now safely click links to the given 'other' routes
+    // (without this, you will get console errors when you
+    //   try to navigate to non-existent routes)
   });
 
   it('can notify when the pathname changes', () => {
