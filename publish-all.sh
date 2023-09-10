@@ -2,6 +2,8 @@
 
 set -euxo pipefail
 
+yarn npm login
+
 echo 'Publishing souvlaki 🌯'
 cd packages/souvlaki
 ./publish.sh
