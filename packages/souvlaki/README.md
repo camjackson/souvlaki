@@ -286,6 +286,8 @@ render(<User />, { wrapper: wrap(withUser('Cam', 'Jackson', 19)) });
 
 - `Context`: `React.Context`
   - A context object, one returned by `React.createContext`.
+- `defaultValue` (optional)
+  - A default value for the context provider, to be used if no value is supplied when the helper is applied
 
 **Returns**:
 
