@@ -1,5 +1,11 @@
 # Changelog
 
+## All packages: v0.3.1
+
+## `souvlaki`
+
+- ⌨️ **Types:** Update return type of `wrap()`, it should play nicely with `@testing-library/react@16` now ([#8](https://github.com/camjackson/souvlaki/issues/8))
+
 ## All packages: v0.3.0
 
 ## `souvlaki`
