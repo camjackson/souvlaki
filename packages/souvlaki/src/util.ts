@@ -1,3 +1,3 @@
 export type ReactComponent = React.JSXElementConstructor<{
-  children: React.ReactElement;
+  children: React.ReactNode;
 }>;
