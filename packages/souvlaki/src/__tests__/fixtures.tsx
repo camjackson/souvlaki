@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 
 it('is not a real test file', () => {});
 
@@ -35,3 +35,14 @@ export const TitleAndVotesPrefixer = ({
     {children}
   </>
 );
+
+type OnMountProps = {
+  onMount: () => void;
+};
+
+export const ComponentWithAMountEffect = ({ onMount }: OnMountProps) => {
+  useEffect(() => {
+    onMount();
+  }, []);
+  return <span>I should call `onMount` only once</span>;
+};
