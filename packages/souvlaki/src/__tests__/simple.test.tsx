@@ -6,6 +6,7 @@ import {
   TitlePrefixer,
   TestComponent,
   TitleAndVotesPrefixer,
+  ComponentWithAMountEffect,
 } from './fixtures';
 
 describe('souvlaki', () => {
@@ -95,5 +96,26 @@ describe('souvlaki', () => {
         </section>
       `,
     );
+  });
+
+  it('does not re-mount the component tree on re-renders', () => {
+    const withSection1 = createHelper(() => ({ children }) => <>{children}</>);
+    const withSection2 = createHelper(() => ({ children }) => <>{children}</>);
+
+    const onMount = jest.fn();
+
+    const { rerender } = render(
+      <ComponentWithAMountEffect onMount={onMount} />,
+      // This works:
+      // { wrapper: wrap(withWrapper1()) },
+      // But this fails:
+      { wrapper: wrap(withSection1(), withSection2()) },
+    );
+
+    expect(onMount).toHaveBeenCalledTimes(1);
+
+    rerender(<ComponentWithAMountEffect onMount={onMount} />);
+
+    expect(onMount).toHaveBeenCalledTimes(1);
   });
 });
